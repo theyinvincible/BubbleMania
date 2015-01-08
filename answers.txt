@@ -40,7 +40,7 @@ Your Answer here
 # Problem 6: Module Dependency Diagram #
 ########################################
 
-Please save your diagram as `mdd.png` in the root directory of the repository.
+Please save your diagram as `class-diagram.png` in the root directory of the repository.
 
 ######################
 # Problem 7: Testing #
