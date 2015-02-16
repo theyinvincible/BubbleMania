@@ -36,9 +36,9 @@ Your Answer here
 
 Your Answer here
 
-########################################
-# Problem 6: Module Dependency Diagram #
-########################################
+############################
+# Problem 6: Class Diagram #
+############################
 
 Please save your diagram as `class-diagram.png` in the root directory of the repository.
 
