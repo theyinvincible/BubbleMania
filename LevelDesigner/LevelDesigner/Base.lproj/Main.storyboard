@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="LevelDesigner" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Np3-mk-PiC">
+                                <rect key="frame" x="112" y="974" width="73" height="30"/>
+                                <state key="normal" title="Reset">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetButtonSelected" destination="BYZ-38-t0r" eventType="touchUpInside" id="bXn-S6-hta"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KBT-aa-H0p">
+                                <rect key="frame" x="20" y="974" width="73" height="30"/>
+                                <state key="normal" title="Load">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loadButtonSelected" destination="BYZ-38-t0r" eventType="touchUpInside" id="VoD-vj-jBh"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AKw-fB-Uck">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="966"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y0e-xg-M56">
+                                <rect key="frame" x="0.0" y="915" width="768" height="51"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OgU-te-hGG">
+                                        <rect key="frame" x="55" y="9" width="60" height="34"/>
+                                        <state key="normal" title="Orange"/>
+                                        <connections>
+                                            <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N8e-Oe-axJ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wbF-yn-U1b">
+                                        <rect key="frame" x="8" y="11" width="46" height="30"/>
+                                        <state key="normal" title="Red"/>
+                                        <connections>
+                                            <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OGb-ID-6QF"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b4G-4x-zrZ">
+                                        <rect key="frame" x="115" y="9" width="49" height="34"/>
+                                        <state key="normal" title="Green"/>
+                                        <connections>
+                                            <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="m6l-WR-Z7n"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mfA-Cb-Vyh">
+                                        <rect key="frame" x="170" y="9" width="46" height="34"/>
+                                        <state key="normal" title="Blue"/>
+                                        <connections>
+                                            <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fpV-tm-kpf"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7l-fx-v0U">
+                                        <rect key="frame" x="231" y="9" width="52" height="34"/>
+                                        <state key="normal" title="Eraser"/>
+                                        <connections>
+                                            <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wsN-2R-sal"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.80618046465968585" green="0.80618046465968585" blue="0.80618046465968585" alpha="0.38694038120567376" colorSpace="calibratedRGB"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ajh-KQ-p0R">
+                                <rect key="frame" x="348" y="974" width="73" height="30"/>
+                                <state key="normal" title="Start">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="startButtonSelected" destination="BYZ-38-t0r" eventType="touchUpInside" id="AI2-zd-Fxz"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bTt-6A-5tP">
+                                <rect key="frame" x="675" y="974" width="73" height="30"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="saveButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8GK-ko-cOy"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <outlet property="blueBubble" destination="mfA-Cb-Vyh" id="1WB-1b-FYC"/>
+                        <outlet property="eraser" destination="F7l-fx-v0U" id="lGj-hI-rbo"/>
+                        <outlet property="gameArea" destination="AKw-fB-Uck" id="fPN-Q5-reJ"/>
+                        <outlet property="greenBubble" destination="b4G-4x-zrZ" id="cBq-ov-E8U"/>
+                        <outlet property="orangeBubble" destination="OgU-te-hGG" id="i2n-24-dQJ"/>
+                        <outlet property="palette" destination="Y0e-xg-M56" id="574-EL-jAs"/>
+                        <outlet property="redBubble" destination="wbF-yn-U1b" id="OjS-HO-wUs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1049" y="265"/>
+        </scene>
+        <!--Game Engine-->
+        <scene sceneID="kOE-hd-DOW">
+            <objects>
+                <viewController storyboardIdentifier="GameEngine" id="d8c-WB-gGe" customClass="GameEngine" customModule="LevelDesigner" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="487-zN-Ue1"/>
+                        <viewControllerLayoutGuide type="bottom" id="Dee-x2-itl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="KjV-2n-ttc">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tsd-gv-cAR">
+                                <rect key="frame" x="357" y="964" width="55" height="44"/>
+                                <state key="normal" title="Launch!">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="launchBubble:" destination="d8c-WB-gGe" eventType="touchUpInside" id="dAj-3f-brW"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <outlet property="LaunchButton" destination="tsd-gv-cAR" id="ULt-Gy-oQP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kpz-Sy-JG5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="468" y="1349"/>
+        </scene>
+    </scenes>
+</document>
