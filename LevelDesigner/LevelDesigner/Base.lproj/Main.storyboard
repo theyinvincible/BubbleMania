@@ -5,10 +5,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Level Design View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="LevelDesigner" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LevelDesignViewController" customModule="LevelDesigner" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -42,35 +42,63 @@
                                 <rect key="frame" x="0.0" y="915" width="768" height="51"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OgU-te-hGG">
-                                        <rect key="frame" x="55" y="9" width="60" height="34"/>
+                                        <rect key="frame" x="68" y="6" width="65" height="40"/>
                                         <state key="normal" title="Orange"/>
                                         <connections>
                                             <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N8e-Oe-axJ"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wbF-yn-U1b">
-                                        <rect key="frame" x="8" y="11" width="46" height="30"/>
+                                        <rect key="frame" x="8" y="6" width="65" height="40"/>
                                         <state key="normal" title="Red"/>
                                         <connections>
                                             <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OGb-ID-6QF"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b4G-4x-zrZ">
-                                        <rect key="frame" x="115" y="9" width="49" height="34"/>
+                                        <rect key="frame" x="128" y="6" width="65" height="40"/>
                                         <state key="normal" title="Green"/>
                                         <connections>
                                             <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="m6l-WR-Z7n"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mfA-Cb-Vyh">
-                                        <rect key="frame" x="170" y="9" width="46" height="34"/>
+                                        <rect key="frame" x="188" y="6" width="65" height="40"/>
                                         <state key="normal" title="Blue"/>
                                         <connections>
                                             <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fpV-tm-kpf"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e1l-ia-NRf">
+                                        <rect key="frame" x="248" y="6" width="65" height="40"/>
+                                        <state key="normal" title="Lightning"/>
+                                        <connections>
+                                            <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5hW-vM-Dyc"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jNA-8X-bvW">
+                                        <rect key="frame" x="368" y="6" width="65" height="40"/>
+                                        <state key="normal" title="Star"/>
+                                        <connections>
+                                            <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="M5G-OP-vvi"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CIh-a6-qEn">
+                                        <rect key="frame" x="308" y="6" width="65" height="40"/>
+                                        <state key="normal" title="Indestructible"/>
+                                        <connections>
+                                            <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OCN-gi-T6w"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jc6-Wg-SGJ">
+                                        <rect key="frame" x="428" y="6" width="65" height="40"/>
+                                        <state key="normal" title="Bomb"/>
+                                        <connections>
+                                            <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9oS-G6-c7F"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7l-fx-v0U">
-                                        <rect key="frame" x="231" y="9" width="52" height="34"/>
+                                        <rect key="frame" x="500" y="6" width="65" height="40"/>
                                         <state key="normal" title="Eraser"/>
                                         <connections>
                                             <action selector="drawingModeSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wsN-2R-sal"/>
@@ -103,12 +131,16 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
                         <outlet property="blueBubble" destination="mfA-Cb-Vyh" id="1WB-1b-FYC"/>
+                        <outlet property="bombBubble" destination="jc6-Wg-SGJ" id="Ie8-MP-4oA"/>
                         <outlet property="eraser" destination="F7l-fx-v0U" id="lGj-hI-rbo"/>
                         <outlet property="gameArea" destination="AKw-fB-Uck" id="fPN-Q5-reJ"/>
                         <outlet property="greenBubble" destination="b4G-4x-zrZ" id="cBq-ov-E8U"/>
+                        <outlet property="indestructibleBubble" destination="CIh-a6-qEn" id="nsc-SH-LHR"/>
+                        <outlet property="lightningBubble" destination="e1l-ia-NRf" id="963-Lo-Elp"/>
                         <outlet property="orangeBubble" destination="OgU-te-hGG" id="i2n-24-dQJ"/>
                         <outlet property="palette" destination="Y0e-xg-M56" id="574-EL-jAs"/>
                         <outlet property="redBubble" destination="wbF-yn-U1b" id="OjS-HO-wUs"/>
+                        <outlet property="starBubble" destination="jNA-8X-bvW" id="qVj-B8-mKP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

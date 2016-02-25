@@ -8,15 +8,14 @@
 
 import Foundation
 
-class ProjectileBubble: BasicBubble {
+class ProjectileBubble: AbstractBubble {
     private var xPos, yPos: Double
-    private let hasPower: Bool
+    private var color = BubbleColor.uninitalized
     
-    init(xPos: Double, yPos: Double, hasPower: Bool) {
-        self.hasPower = hasPower
+    init(xPos: Double, yPos: Double) {
         self.xPos = xPos
         self.yPos = yPos
-        super.init(row: -1, col: -1)
+        super.init(row: -1, col: -1, color: color)
     }
     
     /// Updates position of top left corner
@@ -34,13 +33,8 @@ class ProjectileBubble: BasicBubble {
     func getYPos() -> Double {
         return yPos
     }
-    
-    /// - returns whether the projectile bubble is a power bubble
-    func isPowerBubble() -> Bool {
-        return hasPower
-    }
 
     required convenience init(coder decoder: NSCoder) {
-        self.init(xPos: 0, yPos: 0, hasPower: false)
+        self.init(xPos: 0, yPos: 0)
     }
 }

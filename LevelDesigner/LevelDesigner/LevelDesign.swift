@@ -9,26 +9,26 @@
 import Foundation
 
 class LevelDesign: NSObject, NSCoding {
-    private var bubbleData: [Int: [Int: BasicBubble]]
+    private var bubbleData: [Int: [Int: GridBubble]]
     
     override init() {
-        bubbleData = [Int: [Int: BasicBubble]]()
+        bubbleData = [Int: [Int: GridBubble]]()
     }
     
-    init(gridData: [Int: [Int: BasicBubble]]) {
+    init(gridData: [Int: [Int: GridBubble]]) {
         bubbleData = gridData
     }
     
-    func addBubble(bubble: BasicBubble) {
+    func addBubble(bubble: GridBubble) {
         let row = bubble.getRow()
         let col = bubble.getCol()
         if !bubbleData.keys.contains(row) {
-            bubbleData[row] = [Int: BasicBubble]()
+            bubbleData[row] = [Int: GridBubble]()
         }
         bubbleData[row]![col] = bubble
     }
     
-    func getBubble(row: Int, col: Int) -> BasicBubble? {
+    func getBubble(row: Int, col: Int) -> GridBubble? {
         if containsBubble(row, col: col) {
             return bubbleData[row]![col]!
         }
@@ -71,22 +71,22 @@ class LevelDesign: NSObject, NSCoding {
     }
     
     /// enumerate all bubble views stored in the grid
-    func getBubbleArray() -> [BasicBubble] {
-        var bubbleArray = [BasicBubble]()
+    func getBubbleArray() -> [GridBubble] {
+        var bubbleArray = [GridBubble]()
         for key in bubbleData.keys {
             bubbleArray.appendContentsOf(bubbleData[key]!.values)
         }
         return bubbleArray
     }
     
-    /// encodes a BasicBubble object
+    /// encodes a GridBubble object
     func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(bubbleData, forKey: "grid")
     }
     
-    /// reinstantiates an encoded BasicBubble object
+    /// reinstantiates an encoded GridBubble object
     required convenience init(coder decoder: NSCoder) {
-        let gridData = decoder.decodeObjectForKey("grid") as! [Int: [Int: BasicBubble]]
+        let gridData = decoder.decodeObjectForKey("grid") as! [Int: [Int: GridBubble]]
         self.init(gridData: gridData)
     }
 }

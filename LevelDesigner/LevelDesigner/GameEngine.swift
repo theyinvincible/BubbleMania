@@ -13,9 +13,9 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     private var launchBubblePosition: [CGFloat] = [0, 0]
     private var angleOfLaunchedBubble = M_PI/2
     private var launchAngle = M_PI/2
-    private var gridData: LevelDesign?//[Int: [Int: BasicBubble]]?
+    private var gridData: LevelDesign?//[Int: [Int: GridBubble]]?
     @IBOutlet weak var LaunchButton: UIButton!
-    private var launchBubble = ProjectileBubble(xPos: -1, yPos: -1, hasPower: false)
+    private var launchBubble = ProjectileBubble(xPos: -1, yPos: -1)
     
     private var bubbleDiameter: CGFloat?
     private var currentFrame: UIView?
@@ -27,8 +27,8 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     private let xCoordOfGridCorner = 0.0
     
     private var explodingFrames = 0
-    private var lastSnappedBubble: BasicBubble?
-    private var bubblesToBeRemoved = [BasicBubble]()
+    private var lastSnappedBubble: GridBubble?
+    private var bubblesToBeRemoved = [GridBubble]()
     
     func setGridDesign(gridDesign: LevelDesign) {
         gridData = gridDesign
@@ -114,7 +114,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     func generateLaunchBubble() {
         let randomInt = Int(arc4random_uniform(4)) + 1
         let color = BubbleColor(rawValue: randomInt)
-        launchBubble = ProjectileBubble(xPos: Double(launchBubblePosition[0]), yPos: Double(launchBubblePosition[1]), hasPower: false)
+        launchBubble = ProjectileBubble(xPos: Double(launchBubblePosition[0]), yPos: Double(launchBubblePosition[1]))
         launchBubble.setColor(color!)
     }
 
@@ -128,8 +128,8 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// Places launcheBubble into the grid cell closest to it and adds it into the grid
-    /// - returns the launched bubble as a BasicBubble
-    func snapBubble() -> BasicBubble {
+    /// - returns the launched bubble as a GridBubble
+    func snapBubble() -> GridBubble {
         // determine closest grid cell's coordinates
         let diameter = Double(bubbleDiameter!)
         let row = Int(floor((launchBubble.getYPos() + (diameter/2) - yCoordOfGridCorner)/((6.7/8) * diameter)))
@@ -140,8 +140,8 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
             col = Int(floor(launchBubble.getXPos()/diameter))
         }
         
-        // add a BasicBubble with the same colour properties as launchBubble into the grid
-        let addedBubble = BasicBubble(row: row, col: col)
+        // add a GridBubble with the same colour properties as launchBubble into the grid
+        let addedBubble = GridBubble(row: row, col: col)
         addedBubble.setColor(launchBubble.getColor())
         
         gridData!.addBubble(addedBubble)
@@ -193,8 +193,8 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     /// If attachedBubble is connected to at least 2 other bubbles of the same colour, 
     /// all connected bubbles of the same colour, as well as floating bubbles, will be removed from the grid
     /// - returns an array of all the bubbles that were removed
-    func getBubblesToBeRemoved(attachedBubble: BasicBubble) -> [BasicBubble] {
-        var removedBubbles = [BasicBubble]()
+    func getBubblesToBeRemoved(attachedBubble: GridBubble) -> [GridBubble] {
+        var removedBubbles = [GridBubble]()
         let connectedBubbles = findClusterBubbles(attachedBubble, areSameColour: true)
         if connectedBubbles.count < 3 {
             return removedBubbles
@@ -210,7 +210,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// Removes all items in param bubbles from the gridData
-    func removeFromGridData(bubbles: [BasicBubble]) {
+    func removeFromGridData(bubbles: [GridBubble]) {
         for bubble in bubbles {
             gridData!.removeBubble(bubble.getRow(), col: bubble.getCol())
         }
@@ -219,8 +219,8 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     /// Finds all the floating bubbles in the grid
     /// A bubble is floating if the cluster attached to it does not contain a bubble from the top row
     /// - returns an array of floating bubbles found
-    func findFloatingBubbles() -> [BasicBubble] {
-        var floatingBubbles = [BasicBubble]()
+    func findFloatingBubbles() -> [GridBubble] {
+        var floatingBubbles = [GridBubble]()
         for bubble in gridData!.getBubbleArray() {
             floatingBubbles.append(bubble)
             let cluster = findClusterBubbles(bubble, areSameColour: false)
@@ -236,12 +236,12 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     
     /// Finds a cluster of all the bubbles (of the same colour or not) connected directly/indirectly to it
     /// - returns array of bubbles in the cluster found
-    func findClusterBubbles(startBubble: BasicBubble, areSameColour: Bool) -> [BasicBubble] {
-        var unvisitedBubbles = [BasicBubble]() //FIFO
-        var visited = [BasicBubble]()
-        var currentBubble: BasicBubble?
-        var orderedElements = [BasicBubble]()
-        var neighbours: [BasicBubble]
+    func findClusterBubbles(startBubble: GridBubble, areSameColour: Bool) -> [GridBubble] {
+        var unvisitedBubbles = [GridBubble]() //FIFO
+        var visited = [GridBubble]()
+        var currentBubble: GridBubble?
+        var orderedElements = [GridBubble]()
+        var neighbours: [GridBubble]
         unvisitedBubbles.append(startBubble)
         
         // using depth-first traversal
@@ -266,9 +266,9 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// - returns array of all direct neighbouring bubbles with the same colour as param bubble
-    func getNeighboursOfSameColour(bubble: BasicBubble) -> [BasicBubble] {
+    func getNeighboursOfSameColour(bubble: GridBubble) -> [GridBubble] {
         let allNeighbours = getNeighbours(bubble)
-        var sameColouredNeighbours = [BasicBubble]()
+        var sameColouredNeighbours = [GridBubble]()
         for neighbour in allNeighbours {
             if neighbour.getColor() == bubble.getColor() {
                 sameColouredNeighbours.append(neighbour)
@@ -278,8 +278,8 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// - returns array of all direct neighbouring bubbles of param bubble
-    func getNeighbours(bubble: BasicBubble) -> [BasicBubble] {
-        var neighbours = [BasicBubble]()
+    func getNeighbours(bubble: GridBubble) -> [GridBubble] {
+        var neighbours = [GridBubble]()
         var start = 0
         if bubble.getRow()%2 == 0 {
             start--

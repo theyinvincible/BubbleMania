@@ -8,13 +8,17 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
+class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet var gameArea: UIView!
     @IBOutlet var palette: UIView!
     @IBOutlet var redBubble: UIButton!
     @IBOutlet var orangeBubble: UIButton!
     @IBOutlet var greenBubble: UIButton!
     @IBOutlet var blueBubble: UIButton!
+    @IBOutlet var lightningBubble: UIButton!
+    @IBOutlet var indestructibleBubble: UIButton!
+    @IBOutlet var starBubble: UIButton!
+    @IBOutlet var bombBubble: UIButton!
     @IBOutlet var eraser: UIButton!
     
     private var gridView: BubbleGridView?
@@ -28,7 +32,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
     
     
     enum DrawMode: Int {
-        case unselected, drawRed, drawOrange, drawGreen, drawBlue, erase
+        case unselected, drawRed, drawOrange, drawGreen, drawBlue, drawLightning, drawIndestructible,
+        drawStar, drawBomb, erase
     }
     
     override func viewDidLoad() {
@@ -119,11 +124,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
     
     /// Sets the images of buttons in the palette view
     private func setPaletteView() {
-        let paletteButtons = [redBubble, orangeBubble, greenBubble, blueBubble, eraser]
+        let paletteButtons = [redBubble, orangeBubble, greenBubble, blueBubble, lightningBubble,
+            bombBubble, starBubble, indestructibleBubble, eraser]
         redBubble.setImage(Constants.redBubbleImage, forState: UIControlState.Normal)
         orangeBubble.setImage(Constants.orangeBubbleImage, forState: UIControlState.Normal)
         greenBubble.setImage(Constants.greenBubbleImage, forState: UIControlState.Normal)
         blueBubble.setImage(Constants.blueBubbleImage, forState: UIControlState.Normal)
+        lightningBubble.setImage(Constants.lightningBubbleImage, forState: UIControlState.Normal)
+        bombBubble.setImage(Constants.bombBubbleImage, forState: UIControlState.Normal)
+        starBubble.setImage(Constants.starBubbleImage, forState: UIControlState.Normal)
+        indestructibleBubble.setImage(Constants.indestructibleBubbleImage, forState: UIControlState.Normal)
         eraser.setImage(Constants.eraserImage, forState: UIControlState.Normal)
         for button in paletteButtons {
             button.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
@@ -134,24 +144,31 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
     /// Updates the view of the bubble touched according to the current drawing mode
     /// - returns the new color being set to the bubble
     private func updateBubbleCellView(selectedView: BubbleView) {
-        var newBubbleColor: BubbleColor?
         switch drawingMode {
         case DrawMode.unselected:
             selectedView.setNextCycleColor()    // for tap purposes
         case DrawMode.drawRed:
-            newBubbleColor = BubbleColor.red
+            selectedView.setColor(BubbleColor.red)
         case DrawMode.drawOrange:
-            newBubbleColor = BubbleColor.orange
+            selectedView.setColor(BubbleColor.orange)
         case DrawMode.drawGreen:
-            newBubbleColor = BubbleColor.green
+            selectedView.setColor(BubbleColor.green)
         case DrawMode.drawBlue:
-            newBubbleColor = BubbleColor.blue
+            selectedView.setColor(BubbleColor.blue)
         case DrawMode.erase:
-            newBubbleColor = BubbleColor.uninitalized
+            selectedView.setColor(BubbleColor.uninitalized)
+        case DrawMode.drawLightning:
+            selectedView.setPower(BubblePower.lightning)
+        case DrawMode.drawBomb:
+            selectedView.setPower(BubblePower.bomb)
+        case DrawMode.drawIndestructible:
+            selectedView.setPower(BubblePower.indestructible)
+        case DrawMode.drawStar:
+            selectedView.setPower(BubblePower.star)
         }
-        if newBubbleColor != nil {
-            selectedView.setColor(newBubbleColor!)
-        }
+     //   if newBubbleColor != nil {
+   //         selectedView.setColor(newBubbleColor!)
+       // }
     }
 
     override func didReceiveMemoryWarning() {
@@ -169,6 +186,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
             drawingMode = DrawMode.drawGreen
         } else if sender.isEqual(blueBubble) {
             drawingMode = DrawMode.drawBlue
+        } else if sender.isEqual(lightningBubble) {
+            drawingMode = DrawMode.drawLightning
+        } else if sender.isEqual(indestructibleBubble) {
+            drawingMode = DrawMode.drawIndestructible
+        } else if sender.isEqual(starBubble) {
+            drawingMode = DrawMode.drawStar
+        } else if sender.isEqual(bombBubble) {
+            drawingMode = DrawMode.drawBomb
         } else if sender.isEqual(eraser) {
             drawingMode = DrawMode.erase
         }
@@ -303,9 +328,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
     }
     
     /// Retrieves data of a level design
-    private func getLevelData(fileName: String) -> LevelDesign {    //[Int: [Int: BasicBubble]]{
+    private func getLevelData(fileName: String) -> LevelDesign {    //[Int: [Int: GridBubble]]{
         let archiveURL = documentDirectory.URLByAppendingPathComponent("\(fileName)")
-        return (NSKeyedUnarchiver.unarchiveObjectWithFile(archiveURL.path!) as? LevelDesign)! //[Int: [Int: BasicBubble]])!
+        return (NSKeyedUnarchiver.unarchiveObjectWithFile(archiveURL.path!) as? LevelDesign)! //[Int: [Int: GridBubble]])!
     }
     
     /// Takes in a file name and stores the level design's data into the path directory
@@ -323,8 +348,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
         let bubbleViewArray = gridView!.getBubbleViewArray()
         let levelDesign = LevelDesign()
         for bubbleView in bubbleViewArray {
-            let bubble = BasicBubble(row: bubbleView.getRow(), col: bubbleView.getCol())
+            let bubble = GridBubble(row: bubbleView.getRow(), col: bubbleView.getCol())
             bubble.setColor(bubbleView.getColor())
+            bubble.setPower(bubbleView.getPower())
             levelDesign.addBubble(bubble)
         }
         return levelDesign

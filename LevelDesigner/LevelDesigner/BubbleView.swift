@@ -13,17 +13,19 @@ class BubbleView: UIView {
     private var color: BubbleColor
     private var row: Int
     private var col: Int
+    private var power: BubblePower
     
     init(frame: CGRect, row: Int, col: Int) {
-        self.color = BubbleColor.uninitalized
         self.row = row
         self.col = col
+        color = BubbleColor.uninitalized
+        power = BubblePower.none
         super.init(frame: frame)
-        self.layer.cornerRadius = self.frame.size.width/2
-        self.clipsToBounds = true
-        self.layer.borderColor = UIColor.blackColor().CGColor
-        self.layer.borderWidth = 2.0
-        self.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.3)
+        layer.cornerRadius = self.frame.size.width/2
+        clipsToBounds = true
+        layer.borderColor = UIColor.blackColor().CGColor
+        layer.borderWidth = 2.0
+        backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.3)
     }
 
     func getRow() -> Int {
@@ -42,36 +44,77 @@ class BubbleView: UIView {
     func setColor(newColor: BubbleColor) {
         switch newColor {
         case BubbleColor.uninitalized:
-            self.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.3)
+            backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.3)
+            color = newColor
+            power = BubblePower.none
         case BubbleColor.red:
-            self.backgroundColor = UIColor(patternImage: scaleImage(Constants.redBubbleImage!, view: self))
+            backgroundColor = UIColor(patternImage: scaleImage(Constants.redBubbleImage!, view: self))
+            color = newColor
+            power = BubblePower.none
         case BubbleColor.orange:
-            self.backgroundColor = UIColor(patternImage: scaleImage(Constants.orangeBubbleImage!, view: self))
+            backgroundColor = UIColor(patternImage: scaleImage(Constants.orangeBubbleImage!, view: self))
+            color = newColor
+            power = BubblePower.none
         case BubbleColor.green:
-            self.backgroundColor = UIColor(patternImage: scaleImage(Constants.greenBubbleImage!, view: self))
+            backgroundColor = UIColor(patternImage: scaleImage(Constants.greenBubbleImage!, view: self))
+            color = newColor
+            power = BubblePower.none
         case BubbleColor.blue:
-            self.backgroundColor = UIColor(patternImage: scaleImage(Constants.blueBubbleImage!, view: self))
+            backgroundColor = UIColor(patternImage: scaleImage(Constants.blueBubbleImage!, view: self))
+            color = newColor
+            power = BubblePower.none
+        default:
+            break           // how to do setting of power
         }
-        color = newColor
+        
+    }
+    
+    func setPower(newPower: BubblePower) {
+        switch newPower {
+        case BubblePower.lightning:
+            backgroundColor = UIColor(patternImage: scaleImage(Constants.lightningBubbleImage!, view: self))
+            color = BubbleColor.power
+            power = BubblePower.lightning
+        case BubblePower.indestructible:
+            backgroundColor = UIColor(patternImage: scaleImage(Constants.indestructibleBubbleImage!, view: self))
+            color = BubbleColor.power
+            power = BubblePower.indestructible
+        case BubblePower.bomb:
+            backgroundColor = UIColor(patternImage: scaleImage(Constants.bombBubbleImage!, view: self))
+            color = BubbleColor.power
+            power = BubblePower.bomb
+        case BubblePower.star:
+            backgroundColor = UIColor(patternImage: scaleImage(Constants.starBubbleImage!, view: self))
+            color = BubbleColor.power
+            power = BubblePower.star
+        default:
+            break
+        }
+    }
+    
+    func getPower() -> BubblePower {
+        return power
     }
     
     /// Next color is set in a cycle sequence of red -> orange -> green -> blue -> red.
-    /// - returns the new color being set to the bubble
     func setNextCycleColor() {
         var newColor = BubbleColor.uninitalized
         switch color {
         case BubbleColor.red:
             newColor = BubbleColor.orange
+            setColor(newColor)
         case BubbleColor.orange:
             newColor = BubbleColor.green
+            setColor(newColor)
         case BubbleColor.green:
             newColor = BubbleColor.blue
+            setColor(newColor)
         case BubbleColor.blue:
             newColor = BubbleColor.red
+            setColor(newColor)
         default:
             break
         }
-        setColor(newColor)
     }
     
     /// scales an image to fit the given view

@@ -13,10 +13,16 @@ import UIKit
 class AbstractBubble: NSObject, NSCoding {
     private let row: Int
     private let col: Int
+    private var color: BubbleColor
     
-    init(row: Int, col: Int) {
+    init(row: Int, col: Int, color: BubbleColor) {
         self.row = row
         self.col = col
+        self.color = color
+    }
+    
+    func setColor(newColor: BubbleColor) {
+        color = newColor
     }
     
     /// - returns row that bubble resides on
@@ -29,16 +35,27 @@ class AbstractBubble: NSObject, NSCoding {
         return col
     }
     
+    func getColor() -> BubbleColor {
+        return color
+    }
+    
     /// encodes an AbstractBubble object
     func encodeWithCoder(coder: NSCoder) {
         coder.encodeInteger(getRow(), forKey: "row")
         coder.encodeInteger(getCol(), forKey: "col")
+        coder.encodeInteger(self.color.rawValue, forKey: "color")
     }
     
     /// reinstantiates an encoded AbstractBubble object
     required convenience init(coder decoder: NSCoder) {
         let row = decoder.decodeIntegerForKey("row")
         let col = decoder.decodeIntegerForKey("col")
-        self.init(row: row, col: col)
+        let color = decoder.decodeIntegerForKey("color")
+        self.init(row: row, col: col, color: BubbleColor(rawValue: color)!)
     }
+}
+
+
+enum BubbleColor: Int {
+    case uninitalized, red, orange, green, blue, power
 }

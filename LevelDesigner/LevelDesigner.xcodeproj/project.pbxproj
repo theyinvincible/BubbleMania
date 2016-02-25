@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2523591D1C7C15FB007BC0A1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2523591C1C7C15FB007BC0A1 /* Constants.swift */; };
 		2523591F1C7C5FE9007BC0A1 /* BubbleGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2523591E1C7C5FE9007BC0A1 /* BubbleGridView.swift */; };
-		259A43FF1C5DD1E600217EF3 /* BasicBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259A43FE1C5DD1E600217EF3 /* BasicBubble.swift */; };
+		259A43FF1C5DD1E600217EF3 /* GridBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259A43FE1C5DD1E600217EF3 /* GridBubble.swift */; };
 		25B64A181C67384B0053CFBE /* AbstractBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B64A171C67384B0053CFBE /* AbstractBubble.swift */; };
 		25C51F1C1C6D7815002342E1 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C51F1B1C6D7815002342E1 /* GameEngine.swift */; };
 		25C51F1E1C6D7984002342E1 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C51F1D1C6D7984002342E1 /* PhysicsEngine.swift */; };
@@ -19,7 +19,7 @@
 		25E2A1781C7D748A00953B93 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E2A1771C7D748A00953B93 /* BubbleView.swift */; };
 		25E2A17A1C7D8B5F00953B93 /* LevelDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E2A1791C7D8B5F00953B93 /* LevelDesign.swift */; };
 		6D9CCE161A764766005AD4FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9CCE151A764766005AD4FA /* AppDelegate.swift */; };
-		6D9CCE181A764766005AD4FA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9CCE171A764766005AD4FA /* ViewController.swift */; };
+		6D9CCE181A764766005AD4FA /* LevelDesignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9CCE171A764766005AD4FA /* LevelDesignViewController.swift */; };
 		6D9CCE1B1A764766005AD4FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D9CCE191A764766005AD4FA /* Main.storyboard */; };
 		6D9CCE1D1A764766005AD4FA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D9CCE1C1A764766005AD4FA /* Images.xcassets */; };
 		6D9CCE201A764766005AD4FA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D9CCE1E1A764766005AD4FA /* LaunchScreen.xib */; };
@@ -39,7 +39,7 @@
 /* Begin PBXFileReference section */
 		2523591C1C7C15FB007BC0A1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2523591E1C7C5FE9007BC0A1 /* BubbleGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleGridView.swift; sourceTree = "<group>"; };
-		259A43FE1C5DD1E600217EF3 /* BasicBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicBubble.swift; sourceTree = "<group>"; };
+		259A43FE1C5DD1E600217EF3 /* GridBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridBubble.swift; sourceTree = "<group>"; };
 		25B64A171C67384B0053CFBE /* AbstractBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractBubble.swift; sourceTree = "<group>"; };
 		25C51F1B1C6D7815002342E1 /* GameEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 		25C51F1D1C6D7984002342E1 /* PhysicsEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsEngine.swift; sourceTree = "<group>"; };
@@ -51,7 +51,7 @@
 		6D9CCE101A764766005AD4FA /* LevelDesigner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LevelDesigner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D9CCE141A764766005AD4FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6D9CCE151A764766005AD4FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6D9CCE171A764766005AD4FA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6D9CCE171A764766005AD4FA /* LevelDesignViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDesignViewController.swift; sourceTree = "<group>"; };
 		6D9CCE1A1A764766005AD4FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6D9CCE1C1A764766005AD4FA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6D9CCE1F1A764766005AD4FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -100,7 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				6D9CCE151A764766005AD4FA /* AppDelegate.swift */,
-				6D9CCE171A764766005AD4FA /* ViewController.swift */,
+				6D9CCE171A764766005AD4FA /* LevelDesignViewController.swift */,
 				25E2A1791C7D8B5F00953B93 /* LevelDesign.swift */,
 				2523591E1C7C5FE9007BC0A1 /* BubbleGridView.swift */,
 				25E2A1771C7D748A00953B93 /* BubbleView.swift */,
@@ -109,7 +109,7 @@
 				25C51F1D1C6D7984002342E1 /* PhysicsEngine.swift */,
 				25E222A51C6ED2F6006FF96E /* Renderer.swift */,
 				6D9CCE191A764766005AD4FA /* Main.storyboard */,
-				259A43FE1C5DD1E600217EF3 /* BasicBubble.swift */,
+				259A43FE1C5DD1E600217EF3 /* GridBubble.swift */,
 				25B64A171C67384B0053CFBE /* AbstractBubble.swift */,
 				25E222A71C6ED3D7006FF96E /* ProjectileBubble.swift */,
 				6D9CCE1C1A764766005AD4FA /* Images.xcassets */,
@@ -250,8 +250,8 @@
 				25C51F1C1C6D7815002342E1 /* GameEngine.swift in Sources */,
 				25C51F1E1C6D7984002342E1 /* PhysicsEngine.swift in Sources */,
 				25E222A61C6ED2F6006FF96E /* Renderer.swift in Sources */,
-				6D9CCE181A764766005AD4FA /* ViewController.swift in Sources */,
-				259A43FF1C5DD1E600217EF3 /* BasicBubble.swift in Sources */,
+				6D9CCE181A764766005AD4FA /* LevelDesignViewController.swift in Sources */,
+				259A43FF1C5DD1E600217EF3 /* GridBubble.swift in Sources */,
 				6D9CCE161A764766005AD4FA /* AppDelegate.swift in Sources */,
 				25E222A81C6ED3D7006FF96E /* ProjectileBubble.swift in Sources */,
 				25B64A181C67384B0053CFBE /* AbstractBubble.swift in Sources */,

@@ -90,8 +90,10 @@ class BubbleGridView: UIView {
             let row = bubble.getRow()
             let col = bubble.getCol()
             let color = bubble.getColor()
+            let power = bubble.getPower()
             if let bubbleView = getBubbleView(row, col: col) {
                 bubbleView.setColor(color)
+                bubbleView.setPower(power)
             }
         }
     }
@@ -103,11 +105,14 @@ class BubbleGridView: UIView {
             let row = bubble.getRow()
             let col = bubble.getCol()
             let color = bubble.getColor()
+            let power = bubble.getPower()
             if let bubbleView = getBubbleView(row, col: col) {
                 bubbleView.setColor(color)
+                bubbleView.setPower(power)
             } else {
                 let newBubbleView = addBubbleView(row, col: col)
                 newBubbleView.setColor(color)
+                newBubbleView.setPower(power)
             }
         }
     }

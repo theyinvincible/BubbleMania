@@ -15,12 +15,21 @@ struct Constants {
     static let blueBubbleImageFile = "bubble-blue.png"
     static let orangeBubbleImageFile = "bubble-orange.png"
     static let greenBubbleImageFile = "bubble-green.png"
+    static let lightningBubbleImageFile = "bubble-lightning.png"
+    static let bombBubbleImageFile = "bubble-bomb.png"
+    static let starBubbleImageFile = "bubble-star.png"
+    static let indestructibleBubbleImageFile = "bubble-indestructible.png"
     static let eraserImageFile = "eraser-1.png"
+    
     
     static let redBubbleImage = UIImage(named: redBubbleImageFile)
     static let orangeBubbleImage = UIImage(named: orangeBubbleImageFile)
     static let greenBubbleImage = UIImage(named: greenBubbleImageFile)
     static let blueBubbleImage = UIImage(named: blueBubbleImageFile)
+    static let lightningBubbleImage = UIImage(named: lightningBubbleImageFile)
+    static let bombBubbleImage = UIImage(named: bombBubbleImageFile)
+    static let starBubbleImage = UIImage(named: starBubbleImageFile)
+    static let indestructibleBubbleImage = UIImage(named: indestructibleBubbleImageFile)
     static let eraserImage = UIImage(named: eraserImageFile)
     
     static let gridNumRows = 9
