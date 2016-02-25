@@ -23,11 +23,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
     private let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
     private var savedFileNames: [String]?
 
-//    private let numRows = Constants.gridNumRows
-  //  private let numColsForEvenRow = Constants.gridNumColsForEvenRow
-    //private let numColsForOddRow = Constants.gridNumColsForOddRow
     private var drawingMode = DrawMode.unselected
-   // private var bubbleGridData = [UIView: BasicBubble]()
     private var cellWidth: CGFloat?
     
     
@@ -57,7 +53,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
         setBackgroundView()
         
         // load grid
-       // gridView = BubbleGridView(xPos: 0, yPos: 0, numRows: Constants.gridNumRows, numCols: Constants.gridNumColsForEvenRow, cellWidth: cellWidth!)
         let frame = gameArea.frame
         gridView = BubbleGridView(frame: CGRectMake(frame.minX, frame.minY, frame.width, frame.height))
         gameArea.addSubview(gridView!)
@@ -88,8 +83,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
                 if selectedBubbleView != nil {
                     updateBubbleCellView(selectedBubbleView!)       //cannot use update bubble cell view
                 }
-               // let newBubbleColor = updateBubbleCellView(hitView!)
-                //bubbleGridData[hitView!]?.setColor(newBubbleColor)
             }
         }
     }
@@ -108,9 +101,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
                 updateBubbleCellView(selectedBubbleView!)
             }
         }
-       // var newBubbleColor = BubbleColor.uninitalized
-       // newBubbleColor = updateBubbleCellView(tappedView!)
-        //bubbleGridData[tappedView!]?.setColor(newBubbleColor)
     }
     
     /// Handles long press, bubble cells which get long pressed will be erased
@@ -124,10 +114,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
             if selectedBubbleView != nil {
                 selectedBubbleView!.setColor(BubbleColor.uninitalized)
             }
-            //updateBubbleCellView(hitView as! BubbleView)
         }
-  //      selectedView!.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.3)
-    //    bubbleGridData[selectedView!]!.setColor(BubbleColor.uninitalized)
     }
     
     /// Sets the images of buttons in the palette view
@@ -165,7 +152,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
         if newBubbleColor != nil {
             selectedView.setColor(newBubbleColor!)
         }
-    //    return newBubbleColor!
     }
 
     override func didReceiveMemoryWarning() {
@@ -222,37 +208,19 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
     
     @IBAction func startButtonSelected() {
         let gameEngineViewController = self.storyboard!.instantiateViewControllerWithIdentifier("GameEngine") as! GameEngine
-        /// REPEATED IN SAVELEVEL
-      /**  var dataStorage = [Int: [Int: BasicBubble]]()
-        for (var row = 0; row < numRows; row++) {
-            dataStorage[row] = [Int: BasicBubble]()
-        }
-        for bubble in bubbleGridData.values {
-            if bubble.getColor() != BubbleColor.uninitalized {
-                dataStorage[bubble.getRow()]![bubble.getCol()] = bubble
-            }
-        }       ////    */
         let currentLevelDesign = convertDataToModel()
+        currentLevelDesign.removeAllEmptyBubbles()
         gameEngineViewController.setGridDesign(currentLevelDesign)
-        //gameEngineViewController.setLevelDesign(currentLevelDesign) //   gameEngineViewController.setGridData(currentLevelDesign)    //dataStorage)
-      //  gameEngineViewController.viewDidLoad()
         self.presentViewController(gameEngineViewController, animated: true, completion: nil)
-        //self.navigationController!.pushViewController(gameEngineViewController, animated: true)
     }
     
     /// Action performed when Reset button is selected
     /// Clears screen view and data
     @IBAction func resetButtonSelected() {
         gridView!.removeFromSuperview()
-        //gridView = BubbleGridView(xPos: 0, yPos: 0, numRows: Constants.gridNumRows, numCols: Constants.gridNumColsForEvenRow, cellWidth: cellWidth!)
         let frame = gameArea.frame
         gridView = BubbleGridView(frame: CGRectMake(frame.minX, frame.minY, frame.width, frame.height))
         gameArea.addSubview(gridView!)
-    /**    let resetColor = BubbleColor.uninitalized
-        for bubbleView in bubbleGridData.keys {
-            setBubbleViewWithColor(bubbleView, color: resetColor)
-            bubbleGridData[bubbleView]?.setColor(resetColor)
-        }*/
     }
     
     /// Action performed when Load button is selected
@@ -326,65 +294,12 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
     }
     
     /// Loads the view corresponding to the data parameter
-    private func loadLevel(levelData: LevelDesign) {    //[Int: [Int: BasicBubble]]) {
-        // clears current view and data
-     /**   for cellView in bubbleGridData.keys {
-            cellView.removeFromSuperview()
-        }
-        bubbleGridData.removeAll()*/
+    private func loadLevel(levelData: LevelDesign) {
         gridView!.removeFromSuperview()
-     //   gridView = BubbleGridView(xPos: 0, yPos: 0, numRows: Constants.gridNumRows, numCols: Constants.gridNumColsForEvenRow, cellWidth: self.cellWidth!)
         let frame = gameArea.frame
         gridView = BubbleGridView(frame: CGRectMake(frame.minX, frame.minY, frame.width, frame.height))
         gameArea.addSubview(gridView!)
-
-    /**    let bubbleViewArray = gridView!.getBubbleViewArray()
-        for bubbleView in bubbleViewArray {
-            let bubbleData = levelData.getBubble(bubbleView.getRow(), col: bubbleView.getCol())
-            bubbleView.setColor(bubbleData!.getColor())
-        }*/
-        
         gridView!.setGridDesign(levelData)
-
-      /**  var numCols: Int
-        var offsetX = CGFloat(0)
-        var offsetY = CGFloat(20)
-        let cellWidth = gameArea.frame.size.width/CGFloat(numColsForEvenRow)
-        let cellHeight = cellWidth
-        for (var row = 0; row < numRows; row++) {
-       
-            if row%2 == 0 {
-                numCols = numColsForEvenRow
-                offsetX = 0
-            } else {
-                numCols = numColsForOddRow
-                offsetX = cellWidth/2
-            }
-            
-            for (var col = 0; col < numCols; col++) {
-                //create circular view of bubble cell
-                let bubbleCell = UIView(frame: CGRectMake(offsetX, offsetY, cellWidth, cellHeight))
-                initBubbleCellView(bubbleCell)
-                gameArea.addSubview(bubbleCell)
-                
-                let savedBubbleData = levelData[row]![col]
-                bubbleGridData[bubbleCell] = levelData[row]![col]
-                setBubbleViewWithColor(bubbleCell, color: (savedBubbleData?.getColor())!)
-                
-                //set touch gestures
-                let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-                tapGesture.delegate = self
-                bubbleCell.addGestureRecognizer(tapGesture)
-                
-                let longPressGesture = UILongPressGestureRecognizer(target: self, action: Selector("handleLongPress:"))
-                longPressGesture.delegate = self
-                bubbleCell.addGestureRecognizer(longPressGesture)
-                
-                offsetX += cellWidth
-            }
-            //adjust cell's y offset so that rows are touching each other
-            offsetY += (7/8) * cellHeight
-        }*/
     }
     
     /// Retrieves data of a level design
@@ -401,20 +316,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, UITableView
         if !isSuccessfulSave {
             print("Failed to save level design")
         }
-        /**var dataStorage = [Int: [Int: BasicBubble]]()
-        
-        for (var row = 0; row < numRows; row++) {
-            dataStorage[row] = [Int: BasicBubble]()
-        }
-        for bubble in bubbleGridData.values {
-            dataStorage[bubble.getRow()]![bubble.getCol()] = bubble
-        }
-        
-        let archiveURL = documentDirectory.URLByAppendingPathComponent("\(fileName)")
-        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(dataStorage, toFile: archiveURL.path!)
-        if !isSuccessfulSave {
-            print("Failed to save level design")
-        }*/
     }
     
     /// converts and stores grid data into a level design object

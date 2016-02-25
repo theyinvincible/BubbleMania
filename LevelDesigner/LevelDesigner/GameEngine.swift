@@ -30,9 +30,6 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     private var lastSnappedBubble: BasicBubble?
     private var bubblesToBeRemoved = [BasicBubble]()
     
-  //  func setGridData(gridData: [Int: [Int: BasicBubble]]) {
-    //    self.gridData = gridData
-    //}
     func setGridDesign(gridDesign: LevelDesign) {
         gridData = gridDesign
     }
@@ -58,7 +55,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         physicsEngine!.setReflectionOfProjectile(false, bottom: true, right: true, left: true)
         
         // draws initial scene
-        renderer = Renderer(data: gridData!.getBubbleArray(), launchedBubble: launchBubble, frame: self.view.frame, launchAngle: launchAngle)
+        renderer = Renderer(data: gridData!, launchedBubble: launchBubble, frame: self.view.frame, launchAngle: launchAngle)
         currentFrame = renderer!.redraw()
         self.view.addSubview(currentFrame!)
         self.view.bringSubviewToFront(LaunchButton)
@@ -81,15 +78,6 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
                     explodingFrames = 10    // number of frames for displaying explosion effect
                 }
             }
-      /**      if gridData!.keys.contains(lastSnappedBubble!.getRow()) {
-                if gridData![lastSnappedBubble!.getRow()]!.keys.contains(lastSnappedBubble!.getCol()) {
-                    bubblesToBeRemoved = getBubblesToBeRemoved(lastSnappedBubble!)
-                    if !bubblesToBeRemoved.isEmpty {
-                        gridIsChanged = true
-                        explodingFrames = 10    // number of frames for displaying explosion effect
-                    }
-                }
-            }*/
         }
 
         // update launch bubble position and react to collisions
@@ -112,7 +100,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         
         // redraw scene
         if gridIsChanged {
-            renderer!.update(gridData!.getBubbleArray() , launchedBubble: launchBubble, removedBubbles: bubblesToBeRemoved, launchAngle: launchAngle)
+            renderer!.update(gridData!, launchedBubble: launchBubble, removedBubbles: bubblesToBeRemoved, launchAngle: launchAngle)
         } else {
             renderer!.update(launchBubble, removedBubbles: bubblesToBeRemoved, launchAngle: launchAngle)
         }
@@ -157,10 +145,6 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         addedBubble.setColor(launchBubble.getColor())
         
         gridData!.addBubble(addedBubble)
-       /** if !gridData!.keys.contains(row) {
-            gridData![row] = [Int: BasicBubble]()
-        }
-        gridData![row]![col] = addedBubble*/
         
         return addedBubble
     }
@@ -229,9 +213,6 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     func removeFromGridData(bubbles: [BasicBubble]) {
         for bubble in bubbles {
             gridData!.removeBubble(bubble.getRow(), col: bubble.getCol())
-           /** if gridData!.keys.contains(bubble.getRow()) {
-                gridData![bubble.getRow()]!.removeValueForKey(bubble.getCol())
-            }*/
         }
     }
     
@@ -306,7 +287,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         // iterate through the row above, same row, and row below
         for (var i = -1; i < 2; i++) {
             let row = bubble.getRow() + i
-            if !gridData!.rowIsEmpty(row) {//!gridData!.keys.contains(row) {
+            if !gridData!.rowIsEmpty(row) {
                 continue
             }
             
@@ -316,9 +297,6 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
                     if let neighbour = gridData?.getBubble(row, col: col) {
                         neighbours.append(neighbour)
                     }
-             //       if gridData![row]!.keys.contains(col) {
-               //         neighbours.append(gridData![row]![col]!)
-                 //   }
                 }
             } else {    // left and right neighbours
                 for (var j = -1; j < 2; j += 2) {
@@ -326,25 +304,11 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
                     if let neighbour = gridData?.getBubble(row, col: col) {
                         neighbours.append(neighbour)
                     }
-              //      if gridData![row]!.keys.contains(col) {
-                //        neighbours.append(gridData![row]![col]!)
-                  //  }
                 }
             }
         }
         return neighbours
     }
-
-    /// - returns an array of all the bubbles in grid
-/**    func getBubbleArray() -> [BasicBubble] {
-        var bubbleData = [BasicBubble]()
-        for dict in (gridData?.values)! {
-            for bubble in dict.values {
-                bubbleData.append(bubble)
-            }
-        }
-        return bubbleData
-    }*/
     
     /// handles tap gesture on game area for selection of angle
     func handleTap(tapRecognizer: UITapGestureRecognizer) {

@@ -46,3 +46,7 @@ class BasicBubble: AbstractBubble {
 enum BubbleColor: Int {
     case uninitalized, red, orange, green, blue
 }
+
+enum BubblePower: Int {
+    case none, indestructible, lightning, bomb, star
+}

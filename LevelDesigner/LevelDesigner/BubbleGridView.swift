@@ -10,13 +10,11 @@ import Foundation
 import UIKit
 
 class BubbleGridView: UIView {
-  //  private var bubbleViewArray = [BubbleView]()
     private var bubbleViewStorage = [Int: [Int: BubbleView]]()
     
-    override init(frame: CGRect) {//xPos: CGFloat, yPos: CGFloat, numRows: Int, numCols: Int, cellWidth: CGFloat) {
-        //super.init(frame: CGRectMake(xPos, yPos, CGFloat(numCols)*cellWidth, CGFloat(numRows)*cellWidth)) //include 7/8?
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        var offsetX: CGFloat //= frame.minX//xPos
+        var offsetX: CGFloat
         var offsetY = frame.minY//yPos
         var numCols: Int
         let numRows = Constants.gridNumRows
@@ -31,26 +29,9 @@ class BubbleGridView: UIView {
                 offsetX = cellWidth/2
             }
             for col in 0..<numCols {
-                //create circular view of bubble cell
                 let bubbleCell = BubbleView(frame: CGRectMake(offsetX, offsetY, cellWidth, cellWidth), row: row, col: col)
                 self.addSubview(bubbleCell)
-                
-            //    bubbleViewArray.append(bubbleCell)
-                
                 addBubbleViewToStorage(bubbleCell)
-                
-           //     bubbleGridData[bubbleCell] = BasicBubble(row: row, col: col)
-                //removed data
-                
-                //set touch gestures
-        /**        let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
-                tapGesture.delegate = self
-                bubbleCell.addGestureRecognizer(tapGesture)
-                
-                let longPressGesture = UILongPressGestureRecognizer(target: self, action: Selector("handleLongPress:"))
-                longPressGesture.delegate = self
-                bubbleCell.addGestureRecognizer(longPressGesture)**/
-                
                 offsetX += cellWidth
             }
             //adjust cell's y offset so that rows are touching each other
@@ -70,12 +51,6 @@ class BubbleGridView: UIView {
     
     /// returns the bubble view for a bubble stored in a specific row and column
     func getBubbleView(row: Int, col: Int) -> BubbleView? {
-        /**if bubbleViewStorage.keys.contains(row) {
-            if bubbleViewStorage[row]!.keys.contains(col) {
-                return bubbleViewStorage[row]![col]
-            }
-        }
-        return nil*/
         if containsBubbleViewAtPosition(row, col: col) {
             return bubbleViewStorage[row]![col]
         }
@@ -109,12 +84,31 @@ class BubbleGridView: UIView {
         }
     }
     
-    /// instantiate a gridview based on a level design
+    /// for level design
     func setGridDesign(gridDesign: LevelDesign) {
-        let bubbleViewArray = getBubbleViewArray()
-        for bubbleView in bubbleViewArray {
-            let bubbleData = gridDesign.getBubble(bubbleView.getRow(), col: bubbleView.getCol())
-            bubbleView.setColor(bubbleData!.getColor())
+        for bubble in gridDesign.getBubbleArray() {
+            let row = bubble.getRow()
+            let col = bubble.getCol()
+            let color = bubble.getColor()
+            if let bubbleView = getBubbleView(row, col: col) {
+                bubbleView.setColor(color)
+            }
+        }
+    }
+    
+    /// instantiate a gridview based on a level design for game play
+    init(frame: CGRect, gridDesign: LevelDesign) {
+        super.init(frame: frame)
+        for bubble in gridDesign.getBubbleArray() {
+            let row = bubble.getRow()
+            let col = bubble.getCol()
+            let color = bubble.getColor()
+            if let bubbleView = getBubbleView(row, col: col) {
+                bubbleView.setColor(color)
+            } else {
+                let newBubbleView = addBubbleView(row, col: col)
+                newBubbleView.setColor(color)
+            }
         }
     }
     

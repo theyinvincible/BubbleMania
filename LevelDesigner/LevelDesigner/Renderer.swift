@@ -9,7 +9,7 @@
 import UIKit
 
 class Renderer {
-    private var data: [BasicBubble]
+    private var data: LevelDesign//[BasicBubble]
     private var removedBubbles: [BasicBubble]
     private var launchedBubble: ProjectileBubble?
     private var gameArea: UIView?
@@ -17,7 +17,6 @@ class Renderer {
     private let bubbleDiameter: CGFloat
     private var launchAngle: Double?
     private let numCols = 12
-    private let offsetY = CGFloat(20)
     private let heightRatio = CGFloat(6.7/8)
     
     private var needToRedrawGrid: Bool?
@@ -30,7 +29,7 @@ class Renderer {
     private let explodingBubbleImage = UIImage(named: "explodingBubble.png")
     private let backgroundImage = UIImage(named: "background.png")
     
-    init(data: [BasicBubble], launchedBubble: ProjectileBubble, frame: CGRect, launchAngle: Double) {
+    init(data: LevelDesign, launchedBubble: ProjectileBubble, frame: CGRect, launchAngle: Double) {
         self.data = data
         self.launchedBubble = launchedBubble
         self.removedBubbles = [BasicBubble]()
@@ -42,7 +41,7 @@ class Renderer {
     }
     
     /// Updates the data to be drawn
-    func update(data: [BasicBubble], launchedBubble: ProjectileBubble, removedBubbles: [BasicBubble], launchAngle: Double) {
+    func update(data: LevelDesign, launchedBubble: ProjectileBubble, removedBubbles: [BasicBubble], launchAngle: Double) {
         self.data = data
         self.launchedBubble = launchedBubble
         self.removedBubbles = removedBubbles
@@ -92,7 +91,7 @@ class Renderer {
             } else {
                 xPos = (CGFloat(col) + CGFloat(0.5)) * bubbleDiameter
             }
-            yPos = offsetY + (CGFloat(row) * heightRatio * bubbleDiameter)
+            yPos = (CGFloat(row) * heightRatio * bubbleDiameter)
             
             let explodingBubbleView = UIView(frame: CGRectMake(xPos, yPos, bubbleDiameter, bubbleDiameter))
             explodingBubbleView.backgroundColor = UIColor(patternImage: scaleImage(explodingBubbleImage!, view: explodingBubbleView))
@@ -104,38 +103,8 @@ class Renderer {
     /// Redraws the grid view
     /// - returns the grid view
     func redrawGrid() -> UIView {
-      //  let gridView = BubbleGridView(xPos: 0, yPos: 0, numRows: Constants.gridNumRows, numCols: Constants.gridNumColsForEvenRow, cellWidth: bubbleDiameter)
         let gameAreaFrame = gameArea!.frame
-        let gridView = BubbleGridView(frame: CGRectMake(gameAreaFrame.minX, gameAreaFrame.minY, gameAreaFrame.width, gameAreaFrame.height))
-        var bubbleView: BubbleView
-
-        for bubble in data {
-            let row = bubble.getRow()
-            let col = bubble.getCol()
-            if gridView.containsBubbleViewAtPosition(row, col: col) {
-                bubbleView = gridView.getBubbleView(row, col: col)!
-            } else {
-                bubbleView = gridView.addBubbleView(row, col: col)
-            }
-            bubbleView.setColor(bubble.getColor())
-            
-            
-            // get position
-         /**   let row = bubble.getRow()
-            let col = bubble.getCol()
-            if row%2 == 0{
-                xPos = CGFloat(col) * bubbleDiameter
-            } else {
-                xPos = (CGFloat(col) + CGFloat(0.5)) * bubbleDiameter
-            }
-            yPos = offsetY + (CGFloat(row) * heightRatio * bubbleDiameter)
-            
-            let bubbleView = UIView(frame: CGRectMake(xPos, yPos, bubbleDiameter, bubbleDiameter))
-            initBubbleCellView(bubbleView)
-            setBubbleViewWithColor(bubbleView, color: bubble.getColor())
-            view.addSubview(bubbleView)*/
-        }
-      //  return view
+        let gridView = BubbleGridView(frame: gameAreaFrame, gridDesign: data)
         return gridView
     }
     
