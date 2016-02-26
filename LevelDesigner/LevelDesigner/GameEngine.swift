@@ -23,8 +23,6 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     private var bubbleIsLaunching = false
     private var physicsEngine: PhysicsEngine?
     private var velocity = 7.0
-    private let yCoordOfGridCorner = 20.0
-    private let xCoordOfGridCorner = 0.0
     
     private var explodingFrames = 0
     private var lastSnappedBubble: GridBubble?
@@ -50,7 +48,8 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         generateLaunchBubble()
         
         // initialize physics engine
-        physicsEngine = PhysicsEngine(topBound: yCoordOfGridCorner, bottomBound: Double(self.view.frame.height), leftBound: xCoordOfGridCorner, rightBound: Double(self.view.frame.width))
+        physicsEngine = PhysicsEngine(topBound: Double(self.view.frame.minY), bottomBound: Double(self.view.frame.height), leftBound: Double(self.view.frame.minX)
+            , rightBound: Double(self.view.frame.width))
         physicsEngine!.setTimeStep(1.0)
         physicsEngine!.setReflectionOfProjectile(false, bottom: true, right: true, left: true)
         
@@ -72,10 +71,10 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         // following the addition of launchBubble to the grid, retrieve bubbles to be removed, if any
         if lastSnappedBubble != nil {
             if gridData!.containsBubble(lastSnappedBubble!.getRow(), col: lastSnappedBubble!.getCol()) {
-                bubblesToBeRemoved = getBubblesToBeRemoved(lastSnappedBubble!)
+                bubblesToBeRemoved = getBubblesToBeRemoved(lastSnappedBubble!)      //this part takes too long
                 if !bubblesToBeRemoved.isEmpty {
                     gridIsChanged = true
-                    explodingFrames = 10    // number of frames for displaying explosion effect
+                    explodingFrames = 5    // number of frames for displaying explosion effect
                 }
             }
         }
@@ -132,7 +131,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     func snapBubble() -> GridBubble {
         // determine closest grid cell's coordinates
         let diameter = Double(bubbleDiameter!)
-        let row = Int(floor((launchBubble.getYPos() + (diameter/2) - yCoordOfGridCorner)/((6.7/8) * diameter)))
+        let row = Int(floor((launchBubble.getYPos() + (diameter/2))/((6.7/8) * diameter)))
         let col: Int
         if row%2 == 0 {
             col = Int(floor((launchBubble.getXPos() + (diameter/2))/diameter))
@@ -153,7 +152,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     /// - returns value indicating whether there is collision
     func detectCollision() -> Bool {
         // detect collision with top wall
-        if launchBubble.getYPos() < yCoordOfGridCorner {
+        if launchBubble.getYPos() < Double(self.view.frame.minY) {//yCoordOfGridCorner {
             return true
         }
         
@@ -171,7 +170,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
             } else {
                 x2 = Double(bubble.getCol()+1) * diameter
             }
-            let y2 = (Double(bubble.getRow()) + 0.5) * (6.7/8) * diameter + yCoordOfGridCorner
+            let y2 = (Double(bubble.getRow()) + 0.5) * (6.7/8) * diameter
             
             if physicsEngine!.circlesIntersect(x1, y1: y1, r1: diameter/2, x2: x2, y2: y2, r2: diameter/2) {
                 return true
@@ -195,7 +194,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     /// - returns an array of all the bubbles that were removed
     func getBubblesToBeRemoved(attachedBubble: GridBubble) -> [GridBubble] {
         var removedBubbles = [GridBubble]()
-        let connectedBubbles = findClusterBubbles(attachedBubble, areSameColour: true)
+        let connectedBubbles = findClusterBubbles(attachedBubble, areSameColour: true, reset: true)
         if connectedBubbles.count < 3 {
             return removedBubbles
         }
@@ -205,7 +204,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         let floatingBubbles = findFloatingBubbles()
         removedBubbles.appendContentsOf(floatingBubbles)
         removeFromGridData(floatingBubbles)         // will there be error removing launchedBubble again
-        
+
         return removedBubbles
     }
     
@@ -221,33 +220,44 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     /// - returns an array of floating bubbles found
     func findFloatingBubbles() -> [GridBubble] {
         var floatingBubbles = [GridBubble]()
-        for bubble in gridData!.getBubbleArray() {
-            floatingBubbles.append(bubble)
-            let cluster = findClusterBubbles(bubble, areSameColour: false)
-            for clusterBubble in cluster {
-                if clusterBubble.getRow() == 0 {
-                    floatingBubbles.removeLast()
-                    break
+        resetMarkingOfBubbles()
+        let bubbleArray = gridData!.getBubbleArray()
+        for bubble in bubbleArray {//gridData!.getBubbleArray() {
+            if !bubble.isMarked() {
+                let cluster = findClusterBubbles(bubble, areSameColour: false, reset: true)
+                var floating = true
+                for clusterBubble in cluster {
+                    if clusterBubble.getRow() == 0 {
+                        floating = false
+                    }
+                }
+                if floating {
+                    floatingBubbles.appendContentsOf(cluster)
                 }
             }
         }
+       // print("finished finding floating")
         return floatingBubbles
     }
     
     /// Finds a cluster of all the bubbles (of the same colour or not) connected directly/indirectly to it
     /// - returns array of bubbles in the cluster found
-    func findClusterBubbles(startBubble: GridBubble, areSameColour: Bool) -> [GridBubble] {
+    func findClusterBubbles(startBubble: GridBubble, areSameColour: Bool, reset: Bool) -> [GridBubble] {
+        if reset {
+            resetMarkingOfBubbles()
+        }
+        
+      //  print("find cluster")
         var unvisitedBubbles = [GridBubble]() //FIFO
-        var visited = [GridBubble]()
         var currentBubble: GridBubble?
         var orderedElements = [GridBubble]()
         var neighbours: [GridBubble]
         unvisitedBubbles.append(startBubble)
+        startBubble.mark()
         
         // using depth-first traversal
         while !unvisitedBubbles.isEmpty {
-            currentBubble = unvisitedBubbles.removeFirst()
-            visited.append(currentBubble!)
+            currentBubble = unvisitedBubbles.removeLast()
             
             //add currentBubble's surrounding bubbles into unvisitedBubbles
             if areSameColour {
@@ -256,13 +266,21 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
                 neighbours = getNeighbours(currentBubble!)
             }
             for neighbour in neighbours {
-                if !visited.contains(neighbour) && !unvisitedBubbles.contains(neighbour) {
+                if !neighbour.isMarked() {
                     unvisitedBubbles.append(neighbour)
+                    neighbour.mark()
                 }
             }
             orderedElements.append(currentBubble!)
         }
+       // print("finished finding cluster")
         return orderedElements
+    }
+    
+    func resetMarkingOfBubbles() {
+        for bubble in gridData!.getBubbleArray() {
+            bubble.unmark()
+        }
     }
     
     /// - returns array of all direct neighbouring bubbles with the same colour as param bubble

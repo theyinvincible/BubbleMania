@@ -11,6 +11,7 @@ import UIKit
 /// A basic bubble which has a color attribute, for level designs
 class GridBubble: AbstractBubble {
     private var power = BubblePower.none
+    private var marked = false
     
     init(row: Int, col: Int) {
         super.init(row: row, col: col, color: BubbleColor.uninitalized)
@@ -32,6 +33,15 @@ class GridBubble: AbstractBubble {
  //   func getColor() -> BubbleColor {
   //      return color
     //}
+    func mark() {
+        marked = true
+    }
+    func unmark() {
+        marked = false
+    }
+    func isMarked() -> Bool {
+        return marked
+    }
     
     /// encodes a GridBubble object
     override func encodeWithCoder(coder: NSCoder) {

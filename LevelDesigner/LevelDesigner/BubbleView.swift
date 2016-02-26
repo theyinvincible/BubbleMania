@@ -66,7 +66,6 @@ class BubbleView: UIView {
         default:
             break           // how to do setting of power
         }
-        
     }
     
     func setPower(newPower: BubblePower) {
