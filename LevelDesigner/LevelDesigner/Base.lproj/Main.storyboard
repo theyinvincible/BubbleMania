@@ -189,8 +189,45 @@
             </objects>
             <point key="canvasLocation" x="468" y="1349"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="9uy-J3-SKA">
+            <objects>
+                <viewController id="OQ0-9o-zlj" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="x8N-O2-QO3"/>
+                        <viewControllerLayoutGuide type="bottom" id="QHH-bu-7sD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8G0-Qt-R8b">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jH3-cs-9gp">
+                                <rect key="frame" x="164" y="450" width="440" height="78"/>
+                                <color key="backgroundColor" red="0.43129254718036236" green="1" blue="0.6583037487833685" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Button" image="DesignLevel"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z4O-ea-JRU">
+                                <rect key="frame" x="164" y="619" width="440" height="81"/>
+                                <color key="backgroundColor" red="1" green="0.832483220513627" blue="0.57892157417535706" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Button" image="PlayLevel"/>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BubbleMania logo" translatesAutoresizingMaskIntoConstraints="NO" id="aof-Lv-pgN">
+                                <rect key="frame" x="10" y="179" width="748" height="230"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tEU-5U-fXK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1532" y="1348"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="BubbleMania logo" width="600" height="100"/>
+        <image name="DesignLevel" width="600" height="100"/>
+        <image name="PlayLevel" width="600" height="100"/>
         <image name="cannon" width="400" height="600"/>
         <image name="cannon-base" width="400" height="200"/>
     </resources>
