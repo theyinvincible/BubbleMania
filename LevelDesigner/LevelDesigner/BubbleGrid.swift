@@ -1,6 +1,6 @@
 //
 //  LevelDesign.swift
-//  LevelDesigner
+//  BubbleMania
 //
 //  Created by Jing Yin Ong on 24/2/16.
 //  Copyright © 2016 NUS CS3217. All rights reserved.
@@ -45,7 +45,7 @@ class LevelDesign: NSObject, NSCoding {
     }
     
     func rowIsEmpty(row: Int) -> Bool {
-        if bubbleData.keys.contains(row) {
+        if bubbleData.keys.contains(row) {  //this wrong 
             return true
         }
         return false
@@ -70,6 +70,15 @@ class LevelDesign: NSObject, NSCoding {
         return false
     }
     
+    /// returns an array of bubbles which reside in the given row
+    func getBubblesInRow(row: Int) -> [GridBubble] {
+        var rowBubbles = [GridBubble]()
+        if bubbleData.keys.contains(row) {
+            rowBubbles.appendContentsOf(bubbleData[row]!.values)
+        }
+        return rowBubbles
+    }
+    
     /// enumerate all bubble views stored in the grid
     func getBubbleArray() -> [GridBubble] {
         var bubbleArray = [GridBubble]()
@@ -77,6 +86,17 @@ class LevelDesign: NSObject, NSCoding {
             bubbleArray.appendContentsOf(bubbleData[key]!.values)
         }
         return bubbleArray
+    }
+    
+    /// returns array of bubbles with the same color
+    func getBubblesOfColor(color: BubbleColor) -> [GridBubble] {
+        var coloredBubbles = [GridBubble]()
+        for bubble in getBubbleArray() {
+            if bubble.getColor() == color {
+                coloredBubbles.append(bubble)
+            }
+        }
+        return coloredBubbles
     }
     
     /// encodes a GridBubble object

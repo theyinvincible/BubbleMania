@@ -8,7 +8,7 @@
         <!--Level Design View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LevelDesignViewController" customModule="LevelDesigner" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LevelDesignViewController" customModule="BubbleMania" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -150,7 +150,7 @@
         <!--Game Engine-->
         <scene sceneID="kOE-hd-DOW">
             <objects>
-                <viewController storyboardIdentifier="GameEngine" id="d8c-WB-gGe" customClass="GameEngine" customModule="LevelDesigner" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameEngine" id="d8c-WB-gGe" customClass="GameEngine" customModule="BubbleMania" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="487-zN-Ue1"/>
                         <viewControllerLayoutGuide type="bottom" id="Dee-x2-itl"/>

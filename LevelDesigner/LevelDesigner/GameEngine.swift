@@ -1,6 +1,6 @@
 //
 //  GameEngine.swift
-//  LevelDesigner
+//  BubbleMania
 //
 //  Created by Jing Yin Ong on 12/2/16.
 //  Copyright © 2016 NUS CS3217. All rights reserved.
@@ -63,6 +63,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         var timer = NSTimer.scheduledTimerWithTimeInterval(1/60, target: self, selector: "updateView", userInfo: nil, repeats: true)
     }
     
+    var counter = 0
     /// updates positions of objects and renders the frame accordingly
     func updateView() {
         currentFrame?.removeFromSuperview()
@@ -71,10 +72,18 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         // following the addition of launchBubble to the grid, retrieve bubbles to be removed, if any
         if lastSnappedBubble != nil {
             if gridData!.containsBubble(lastSnappedBubble!.getRow(), col: lastSnappedBubble!.getCol()) {
-                bubblesToBeRemoved = getBubblesToBeRemoved(lastSnappedBubble!)      //this part takes too long
+                let bubblesRemovedByPower = getBubblesRemovedWithPower(lastSnappedBubble!)
+                if !bubblesRemovedByPower.isEmpty {
+                    bubblesToBeRemoved = bubblesRemovedByPower
+                } else {
+                    bubblesToBeRemoved = getBubblesToBeRemoved(lastSnappedBubble!)      //this part takes too long
+                }
+                
                 if !bubblesToBeRemoved.isEmpty {
                     gridIsChanged = true
                     explodingFrames = 5    // number of frames for displaying explosion effect
+                } else {
+                    lastSnappedBubble = nil
                 }
             }
         }
@@ -96,7 +105,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
                 bubblesToBeRemoved.removeAll()
             }
         }
-        
+
         // redraw scene
         if gridIsChanged {
             renderer!.update(gridData!, launchedBubble: launchBubble, removedBubbles: bubblesToBeRemoved, launchAngle: launchAngle)
@@ -108,6 +117,82 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         self.view.addSubview(currentFrame!)
         self.view.bringSubviewToFront(LaunchButton)
     }
+    
+    func getBubblesRemovedWithPower(snappedBubble: GridBubble) -> [GridBubble] {
+        let directPowers = powerBubblesTouched(snappedBubble)
+        var removedBubbles = [GridBubble]()
+        for powerBubble in directPowers {
+            removedBubbles.appendContentsOf(handlePowerBubble(powerBubble, snappedBubble: snappedBubble))
+            // need to remove from grid
+        }
+        removeFromGridData(removedBubbles)
+        
+        let floatingBubbles = findFloatingBubbles()
+        removedBubbles.appendContentsOf(floatingBubbles)
+        removeFromGridData(floatingBubbles)
+        
+        return removedBubbles
+    }
+    
+    /// retrieve list of adjacent bubbles that have power
+    func powerBubblesTouched(bubble: GridBubble) -> [GridBubble] {
+        let neighbours = getNeighbours(bubble)
+        var powerBubbleNeighbours = [GridBubble]()
+        for neighbour in neighbours {
+            if (neighbour.getPower() != BubblePower.none) && (neighbour.getPower() != BubblePower.indestructible) { //change to bubble.hasDestructivePower
+                powerBubbleNeighbours.append(neighbour)
+            }
+        }
+        return powerBubbleNeighbours
+    }
+    
+    /// returns array of bubbles destroyed directly by a power bubble
+    func handlePowerBubble(powerBubble: GridBubble, snappedBubble: GridBubble) -> [GridBubble] {
+        var affectedBubbles = [GridBubble]()
+        switch powerBubble.getPower() {
+        case BubblePower.lightning:
+            affectedBubbles = gridData!.getBubblesInRow(powerBubble.getRow())
+            // use recursion for chain reaction
+            let chainedBubbles = containsPowerBubble(affectedBubbles)
+            removeFromGridData(affectedBubbles)
+            if !chainedBubbles.isEmpty {
+                    for chainedBubble in chainedBubbles {
+                    affectedBubbles.appendContentsOf(handlePowerBubble(chainedBubble, snappedBubble: snappedBubble))
+                }
+            }
+        case BubblePower.bomb:
+            affectedBubbles = getNeighbours(powerBubble)
+            let chainedBubbles = containsPowerBubble(affectedBubbles)
+            removeFromGridData(affectedBubbles)
+            if !chainedBubbles.isEmpty {
+                for chainedBubble in chainedBubbles {
+                    affectedBubbles.appendContentsOf(handlePowerBubble(chainedBubble, snappedBubble: snappedBubble))
+                }
+            }
+        case BubblePower.star:
+            affectedBubbles = gridData!.getBubblesOfColor(snappedBubble.getColor())
+            let chainedBubbles = containsPowerBubble(affectedBubbles)
+            removeFromGridData(affectedBubbles)
+            if !chainedBubbles.isEmpty {
+                for chainedBubble in chainedBubbles {
+                    affectedBubbles.appendContentsOf(handlePowerBubble(chainedBubble, snappedBubble: snappedBubble))
+                }
+            }
+        default:
+            break
+        }
+        affectedBubbles.append(powerBubble)
+        return affectedBubbles
+    }
+
+    func containsPowerBubble(bubbleArray: [GridBubble]) -> [GridBubble] {
+        var powerBubbles = [GridBubble]()
+        for bubble in bubbleArray {
+            powerBubbles.append(bubble)
+        }
+        return powerBubbles
+    }
+
     
     /// generates and sets the launchBubble as a projectile bubble with a random colour
     func generateLaunchBubble() {
@@ -277,12 +362,14 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         return orderedElements
     }
     
+    // should put this in BubbleGrid
     func resetMarkingOfBubbles() {
         for bubble in gridData!.getBubbleArray() {
             bubble.unmark()
         }
     }
     
+    // should put this in BubbleGrid
     /// - returns array of all direct neighbouring bubbles with the same colour as param bubble
     func getNeighboursOfSameColour(bubble: GridBubble) -> [GridBubble] {
         let allNeighbours = getNeighbours(bubble)
@@ -295,6 +382,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         return sameColouredNeighbours
     }
     
+    // should put this in BubbleGrid
     /// - returns array of all direct neighbouring bubbles of param bubble
     func getNeighbours(bubble: GridBubble) -> [GridBubble] {
         var neighbours = [GridBubble]()

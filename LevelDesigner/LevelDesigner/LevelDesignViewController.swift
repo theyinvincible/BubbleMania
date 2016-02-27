@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  LevelDesigner
+//  BubbleMania
 //
 //  Created by YangShun on 26/1/15.
 //  Copyright (c) 2015 NUS CS3217. All rights reserved.

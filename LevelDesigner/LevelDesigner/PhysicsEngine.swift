@@ -1,6 +1,6 @@
 //
 //  PhysicsEngine.swift
-//  LevelDesigner
+//  BubbleMania
 //
 //  Created by Jing Yin Ong on 12/2/16.
 //  Copyright © 2016 NUS CS3217. All rights reserved.
