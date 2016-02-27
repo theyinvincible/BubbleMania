@@ -8,7 +8,7 @@
 
 import Foundation
 
-class LevelDesign: NSObject, NSCoding {
+class BubbleGrid: NSObject, NSCoding {
     private var bubbleData: [Int: [Int: GridBubble]]
     
     override init() {

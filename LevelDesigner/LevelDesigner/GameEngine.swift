@@ -13,9 +13,11 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     private var launchBubblePosition: [CGFloat] = [0, 0]
     private var angleOfLaunchedBubble = M_PI/2
     private var launchAngle = M_PI/2
-    private var gridData: LevelDesign?//[Int: [Int: GridBubble]]?
+    private var gridData: BubbleGrid?//[Int: [Int: GridBubble]]?
     @IBOutlet weak var LaunchButton: UIButton!
+    @IBOutlet var cannon: UIView!
     private var launchBubble = ProjectileBubble(xPos: -1, yPos: -1)
+    private var prelaunchBubbles = [ProjectileBubble]()
     
     private var bubbleDiameter: CGFloat?
     private var currentFrame: UIView?
@@ -28,13 +30,16 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     private var lastSnappedBubble: GridBubble?
     private var bubblesToBeRemoved = [GridBubble]()
     
-    func setGridDesign(gridDesign: LevelDesign) {
+    func setGridDesign(gridDesign: BubbleGrid) {
         gridData = gridDesign
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-  
+       // cannon.layer.anchorPoint = CGPointMake(0.5, 1)
+       // cannon.center = CGPoint(x: cannon.frame.size.width/2, y: cannon.frame.size.height)
+        
+        
         // initialize values
         bubbleDiameter = self.view.frame.size.width/CGFloat(12)
         launchBubblePosition[0] = (self.view.frame.width/2) - (bubbleDiameter!/2)
@@ -115,6 +120,11 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         
         currentFrame = renderer!.redraw()
         self.view.addSubview(currentFrame!)
+        
+      //  cannon.transform = CGAffineTransformTranslate(cannon.transform, 0, 200)
+        cannon.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2 - launchAngle))
+//        cannon.transform = CGAffineTransformTranslate(cannon.transform, 0, 180)
+        self.view.addSubview(cannon)
         self.view.bringSubviewToFront(LaunchButton)
     }
     

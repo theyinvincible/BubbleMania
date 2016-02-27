@@ -319,7 +319,7 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
     }
     
     /// Loads the view corresponding to the data parameter
-    private func loadLevel(levelData: LevelDesign) {
+    private func loadLevel(levelData: BubbleGrid) {
         gridView!.removeFromSuperview()
         let frame = gameArea.frame
         gridView = BubbleGridView(frame: CGRectMake(frame.minX, frame.minY, frame.width, frame.height))
@@ -328,9 +328,9 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
     }
     
     /// Retrieves data of a level design
-    private func getLevelData(fileName: String) -> LevelDesign {    //[Int: [Int: GridBubble]]{
+    private func getLevelData(fileName: String) -> BubbleGrid {    //[Int: [Int: GridBubble]]{
         let archiveURL = documentDirectory.URLByAppendingPathComponent("\(fileName)")
-        return (NSKeyedUnarchiver.unarchiveObjectWithFile(archiveURL.path!) as? LevelDesign)! //[Int: [Int: GridBubble]])!
+        return (NSKeyedUnarchiver.unarchiveObjectWithFile(archiveURL.path!) as? BubbleGrid)! //[Int: [Int: GridBubble]])!
     }
     
     /// Takes in a file name and stores the level design's data into the path directory
@@ -344,9 +344,9 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
     }
     
     /// converts and stores grid data into a level design object
-    private func convertDataToModel() -> LevelDesign {
+    private func convertDataToModel() -> BubbleGrid {
         let bubbleViewArray = gridView!.getBubbleViewArray()
-        let levelDesign = LevelDesign()
+        let levelDesign = BubbleGrid()
         for bubbleView in bubbleViewArray {
             let bubble = GridBubble(row: bubbleView.getRow(), col: bubbleView.getCol())
             bubble.setColor(bubbleView.getColor())

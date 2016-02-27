@@ -9,7 +9,7 @@
 import UIKit
 
 class Renderer {
-    private var data: LevelDesign//[GridBubble]
+    private var data: BubbleGrid//[GridBubble]
     private var removedBubbles: [GridBubble]
     private var launchedBubble: ProjectileBubble?
     private var gameArea: UIView?
@@ -29,7 +29,7 @@ class Renderer {
     private let explodingBubbleImage = UIImage(named: "explodingBubble.png")
     private let backgroundImage = UIImage(named: "background.png")
     
-    init(data: LevelDesign, launchedBubble: ProjectileBubble, frame: CGRect, launchAngle: Double) {
+    init(data: BubbleGrid, launchedBubble: ProjectileBubble, frame: CGRect, launchAngle: Double) {
         self.data = data
         self.launchedBubble = launchedBubble
         self.removedBubbles = [GridBubble]()
@@ -41,7 +41,7 @@ class Renderer {
     }
     
     /// Updates the data to be drawn
-    func update(data: LevelDesign, launchedBubble: ProjectileBubble, removedBubbles: [GridBubble], launchAngle: Double) {
+    func update(data: BubbleGrid, launchedBubble: ProjectileBubble, removedBubbles: [GridBubble], launchAngle: Double) {
         self.data = data
         self.launchedBubble = launchedBubble
         self.removedBubbles = removedBubbles

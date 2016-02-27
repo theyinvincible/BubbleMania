@@ -85,7 +85,7 @@ class BubbleGridView: UIView {
     }
     
     /// for level design
-    func setGridDesign(gridDesign: LevelDesign) {
+    func setGridDesign(gridDesign: BubbleGrid) {
         for bubble in gridDesign.getBubbleArray() {
             let row = bubble.getRow()
             let col = bubble.getCol()
@@ -99,7 +99,7 @@ class BubbleGridView: UIView {
     }
     
     /// instantiate a gridview based on a level design for game play
-    init(frame: CGRect, gridDesign: LevelDesign) {
+    init(frame: CGRect, gridDesign: BubbleGrid) {
         super.init(frame: frame)
         for bubble in gridDesign.getBubbleArray() {
             let row = bubble.getRow()
