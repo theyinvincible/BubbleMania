@@ -12,59 +12,64 @@ import Darwin
 class GameViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var LaunchButton: UIButton!
     @IBOutlet var cannon: UIView!
-    private var gameEngine: GameEngine?
-    private var launchAngle = M_PI/2
-    private var currentFrame: UIView?
+    @IBOutlet var pausebutton: UIButton!
+    
+    private var launchAngle = Constants.startingLaunchAngle
     private var gridData: BubbleGrid?
+    private var gameEngine: GameEngine?
+    private var currentFrame: UIView?
     
     func setGridData(gridDesign: BubbleGrid) {
         gridData = gridDesign
-        //gameEngine = GameEngine(gridData: gridDesign, viewFrame: view.frame)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.gameEngine = GameEngine(gridData: gridData!, viewFrame: self.view.frame)
 
-        // set gesture recognizers
+        // set gesture recognizer for launch angle selection
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        if gameEngine == nil{
-            print("game engine is nil")
-        }
+
         currentFrame = gameEngine!.getView()
         view.addSubview(currentFrame!)
 
-        // redraws scene at 60 frames per second
+        // redraws game scene at 60 frames per second
         _ = NSTimer.scheduledTimerWithTimeInterval(1/60, target: self, selector: "updateView", userInfo: nil, repeats: true)
     }
     
     /// updates positions of objects and renders the frame accordingly
     func updateView() {
+        if pause {
+            return
+        }
         currentFrame?.removeFromSuperview()
         currentFrame = gameEngine!.getView()
         view.addSubview(currentFrame!)
         
-        // draw cannon
-        cannon.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2 - launchAngle))
+        // draw cannon rotation
+        cannon.transform = CGAffineTransformMakeRotation(CGFloat(Constants.startingLaunchAngle - launchAngle))
         self.view.addSubview(cannon)
         self.view.bringSubviewToFront(LaunchButton)
-        
-       // displayPrelaunchBubbles()
-    }
-
-    /// Handles launch button, launches the projectile bubble launchBubble
-    @IBAction func launchBubble(sender: AnyObject?) {
-        // nothing happens if a bubble is in the air
-        gameEngine?.launch()
-      //  if !bubbleIsLaunching {
-        //    angleOfLaunchedBubble = launchAngle
-          //  bubbleIsLaunching = true
-        //}
+        self.view.bringSubviewToFront((pausebutton))
     }
     
-    /// handles tap gesture on game area for selection of angle
+    var pause = false
+    @IBAction func pause(sender: AnyObject?) {
+        if pause {
+            pause = false
+        } else {
+            pause = true
+        }
+    }
+
+    /// Handles launch button, launches the bubble in the cannon if no other bubbles are mid-air
+    @IBAction func launchBubble(sender: AnyObject?) {
+        gameEngine!.launch()
+    }
+    
+    /// handles tap gesture on game area for selection of cannon angle
     func handleTap(tapRecognizer: UITapGestureRecognizer) {
         let point = tapRecognizer.locationInView(self.view)
         let changeX = point.x - (self.view.frame.width)/2

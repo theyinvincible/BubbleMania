@@ -22,38 +22,44 @@ class GameEngine {
     
     private var bubbleDiameter: CGFloat?
     private var currentFrame: UIView?
-    private var renderer: newRenderer
+    private var renderer: Renderer
     private var bubbleIsLaunching = false
     private var physicsEngine: PhysicsEngine
-    private var velocity = 7.0
+    private var velocity: Double
     
     private var explodingFrames = 0
     private var lastSnappedBubble: GridBubble?
     private var bubblesToBeRemoved = [GridBubble]()
     
     init(gridData: BubbleGrid, viewFrame: CGRect) {
+        // initialize values
         self.gridData = gridData
         self.viewFrame = viewFrame
-        
-        // initialize values
-        bubbleDiameter = viewFrame.size.width/CGFloat(12)
+        bubbleDiameter = viewFrame.size.width/CGFloat(Constants.gridNumColsForEvenRow)
         launchBubblePosition.0 = (viewFrame.width/2) - (bubbleDiameter!/2)
         launchBubblePosition.1 = viewFrame.height - bubbleDiameter!
         
         // initialize physics engine
         physicsEngine = PhysicsEngine(topBound: Double(viewFrame.minY), bottomBound: Double(viewFrame.height), leftBound: Double(viewFrame.minX), rightBound: Double(viewFrame.width))
-        physicsEngine.setTimeStep(1.0)
+        physicsEngine.setTimeStep(Constants.timeStep)
         physicsEngine.setReflectionOfProjectile(false, bottom: true, right: true, left: true)
+        velocity = Constants.bubbleVelocity
         
         // initialize renderer
-        renderer = newRenderer(data: gridData, launchedBubble: launchBubble, frame: viewFrame)//Renderer(data: gridData, launchedBubble: launchBubble, frame: viewFrame, launchAngle: launchAngle, prelaunchBubbles: prelaunchBubbles)
-        
+        renderer = Renderer(data: gridData, launchedBubble: launchBubble, frame: viewFrame)
         initLaunchBubbles()
         renderer.redrawProjectedTrajectory(angleOfLaunchedBubble)
         renderer.updateLaunchedBubble(launchBubble)
         renderer.updatePrelaunchBubbles(prelaunchBubbles)
     }
     
+    /// updates the angle of the projected trajectory of the pre-launched projectile bubble
+    func updateAngle(angle: Double) {
+        launchAngle = angle
+        renderer.redrawProjectedTrajectory(launchAngle)
+    }
+    
+    /// launches the projectile bubble
     func launch() {
         if !bubbleIsLaunching {
             angleOfLaunchedBubble = launchAngle
@@ -61,57 +67,58 @@ class GameEngine {
         }
     }
     
+    /// handles the interactions in the game
+    /// - returns the view of the game screen according to the interactions
     func getView() -> UIView {
-        logic()
+        handleGameLogic()
         return renderer.redraw()
     }
-        
-    func logic() {
+    
+    /// handles the trajectory of launched bubble and the effects of bubble collision
+    func handleGameLogic() {
         if bubbleIsLaunching {
             updateLaunchedBubblePosition()
             renderer.updateLaunchedBubble(launchBubble)
             if detectCollision() {
-                //lastSnappedBubble = snapBubble()
                 let snappedBubble = snapBubble()
                 bubbleIsLaunching = false
-                updateLaunchBubbles()
+                updatePrelaunchBubbles()
                 renderer.updatePrelaunchBubbles(prelaunchBubbles)
                 let destroyedBubbles = getDestroyedBubbles(snappedBubble)
-                print("passing removed bubbles to renderer")
-                print(destroyedBubbles.isEmpty)
                 renderer.updateGrid(snappedBubble, removedBubbles: destroyedBubbles)
             }
         }
     }
-        
+    
+    /// - returns an array of bubbles that were removed following the collision of the
+    /// launch bubble with the grid
+    /// if the projectile bubble comes into contact with a power bubble, the resulting
+    /// effect will only consider the effects of the power bubble, disregarding connected
+    /// bubbles of the same color
     func getDestroyedBubbles(snapBubble: GridBubble) -> [GridBubble] {
-        let bubblesRemovedByPower = getBubblesRemovedWithPower(snapBubble)
+        let bubblesRemovedByPower = getBubblesRemovedByPowerBubbles(snapBubble)
         if !bubblesRemovedByPower.isEmpty {
             bubblesToBeRemoved = bubblesRemovedByPower
         } else {
-            bubblesToBeRemoved = getBubblesToBeRemoved(snapBubble)      //this part takes too long
+            bubblesToBeRemoved = getBubblesToBeRemoved(snapBubble)
         }
         return bubblesToBeRemoved
-    }
-    
-    func updateAngle(angle: Double) {
-        launchAngle = angle
-        renderer.redrawProjectedTrajectory(launchAngle)
-        /// get renderer to redraw the dotted lines
     }
     
     /**********************************/
     /******Handles launch bubbles******/
     /**********************************/
-    /// initializes launch bubbles
-    func initLaunchBubbles() {
+     
+    /// initializes prelaunch bubbles to be previewed
+    private func initLaunchBubbles() {
         for _ in 0..<numPrelaunchBubbles {
             prelaunchBubbles.append(generateLaunchBubble())
         }
         launchBubble = prelaunchBubbles.first!
     }
-    /// removes the original launch bubble and appends a new projectile bubble
-    func updateLaunchBubbles() {
+    
+    /// replaces the original launchBubble with the next, and appends a new projectile bubble for preview
+    private func updatePrelaunchBubbles() {
         if !prelaunchBubbles.isEmpty {
             prelaunchBubbles.removeFirst()
             prelaunchBubbles.append(generateLaunchBubble())
@@ -120,33 +127,36 @@ class GameEngine {
             launchBubble = prelaunchBubbles.first!
         }
     }
-    /// generates and sets the launchBubble as a projectile bubble with a random colour
-    func generateLaunchBubble() -> ProjectileBubble {
-        let randomInt = Int(arc4random_uniform(4)) + 1
+    
+    /// generates a projectile bubble of random colour
+    private func generateLaunchBubble() -> ProjectileBubble {
+        let randomInt = Int(arc4random_uniform(Constants.numberOfRandomizedColours)) + 1 //to match the rawValue range of BubbleColor
         let color = BubbleColor(rawValue: randomInt)
         let bubble = ProjectileBubble(xPos: Double(launchBubblePosition.0), yPos: Double(launchBubblePosition.1))
         bubble.setColor(color!)
         return bubble
     }
-    /// Retrieves the next position of a bubble when it is launched
-    func updateLaunchedBubblePosition() {
+    
+    /// Retrieves the next position of a bubble that has been launched
+    private func updateLaunchedBubblePosition() {
         let xPos = launchBubble.getXPos()
         let yPos = launchBubble.getYPos()
         let diameter = Double(bubbleDiameter!)
-        let newCoords = physicsEngine.getNextPosition(xPos, srcY: yPos, width: diameter, height: diameter, angle: angleOfLaunchedBubble, velocity: velocity)
-        launchBubble.updatePosition(newCoords.xCoord, yPos: newCoords.yCoord)
-        angleOfLaunchedBubble = newCoords.angle
+        let newVector = physicsEngine.getNextPosition(xPos, srcY: yPos, width: diameter, height: diameter, angle: angleOfLaunchedBubble, velocity: velocity)
+        launchBubble.updatePosition(newVector.xCoord, yPos: newVector.yCoord)
+        angleOfLaunchedBubble = newVector.angle
     }
     
     /*********************************************************/
     /******Handles snapping of projectile bubble to grid******/
     /*********************************************************/
-    /// Places launcheBubble into the grid cell closest to it and adds it into the grid
+     
+    /// Places launchedBubble into the grid cell closest to it and adds it into the grid
     /// - returns the launched bubble as a GridBubble
-    func snapBubble() -> GridBubble {
+    private func snapBubble() -> GridBubble {
         // determine closest grid cell's coordinates
         let diameter = Double(bubbleDiameter!)
-        let row = Int(floor((launchBubble.getYPos() + (diameter/2))/((6.7/8) * diameter)))
+        let row = Int(floor((launchBubble.getYPos() + (diameter/2))/(Double(Constants.adjustRowSeparation) * diameter)))
         let col: Int
         if row%2 == 0 {
             col = Int(floor((launchBubble.getXPos() + (diameter/2))/diameter))
@@ -157,7 +167,6 @@ class GameEngine {
         // add a GridBubble with the same colour properties as launchBubble into the grid
         let addedBubble = GridBubble(row: row, col: col)
         addedBubble.setColor(launchBubble.getColor())
-        
         gridData.addBubble(addedBubble)
         
         return addedBubble
@@ -165,9 +174,9 @@ class GameEngine {
     
     /// Detects collision between launchBubble and the top wall/bubbles in the grid
     /// - returns value indicating whether there is collision
-    func detectCollision() -> Bool {
+    private func detectCollision() -> Bool {
         // detect collision with top wall
-        if launchBubble.getYPos() < Double(viewFrame.minY) {//yCoordOfGridCorner {
+        if launchBubble.getYPos() < Double(viewFrame.minY) {
             return true
         }
         
@@ -181,11 +190,11 @@ class GameEngine {
             let x2: Double
             // get centre position of bubble in grid
             if bubble.getRow()%2 == 0 {
-                x2 = (Double(bubble.getCol()) + 0.5) * diameter
+                x2 = (Double(bubble.getCol()) + Constants.adjustCentre) * diameter
             } else {
-                x2 = Double(bubble.getCol()+1) * diameter
+                x2 = Double(bubble.getCol() + Constants.adjustCentreForOddRow) * diameter
             }
-            let y2 = (Double(bubble.getRow()) + 0.5) * (6.7/8) * diameter
+            let y2 = (Double(bubble.getRow()) + Constants.adjustCentre) * Double(Constants.adjustRowSeparation) * diameter
             
             if physicsEngine.circlesIntersect(x1, y1: y1, r1: diameter/2, x2: x2, y2: y2, r2: diameter/2) {
                 return true
@@ -197,15 +206,18 @@ class GameEngine {
     /************************************************/
     /******Handles collision with power bubbles******/
     /************************************************/
-    func getBubblesRemovedWithPower(snappedBubble: GridBubble) -> [GridBubble] {
+    
+    /// retrieves the power bubbles that are adjacent to the snappedBubble and removes bubbles that
+    /// were directly destroyed by the power bubbles, as well as floating bubbles that were a result of that
+    /// - returns an array of all the bubbles that were removed when the bubble snapped into grid next to a power bubble
+    private func getBubblesRemovedByPowerBubbles(snappedBubble: GridBubble) -> [GridBubble] {
         let directPowers = powerBubblesTouched(snappedBubble)
         var removedBubbles = [GridBubble]()
         for powerBubble in directPowers {
             removedBubbles.appendContentsOf(handlePowerBubble(powerBubble, snappedBubble: snappedBubble))
-            // need to remove from grid
         }
         removeFromGridData(removedBubbles)
-        
+        // handle floating bubbles
         let floatingBubbles = findFloatingBubbles()
         removedBubbles.appendContentsOf(floatingBubbles)
         removeFromGridData(floatingBubbles)
@@ -213,58 +225,58 @@ class GameEngine {
         return removedBubbles
     }
     
-    /// retrieve list of adjacent bubbles that have power
-    func powerBubblesTouched(bubble: GridBubble) -> [GridBubble] {
+    /// - returns an array of a bubble's adjacent power bubbles
+    private func powerBubblesTouched(bubble: GridBubble) -> [GridBubble] {
         let neighbours = getNeighbours(bubble)
         var powerBubbleNeighbours = [GridBubble]()
         for neighbour in neighbours {
-            if (neighbour.getPower() != BubblePower.none) && (neighbour.getPower() != BubblePower.indestructible) { //change to bubble.hasDestructivePower
+            if (neighbour.getPower() != BubblePower.none) && (neighbour.getPower() != BubblePower.indestructible) {
                 powerBubbleNeighbours.append(neighbour)
             }
         }
         return powerBubbleNeighbours
     }
     
-    /// returns array of bubbles destroyed directly by a power bubble
-    func handlePowerBubble(powerBubble: GridBubble, snappedBubble: GridBubble) -> [GridBubble] {
-        var affectedBubbles = [GridBubble]()
+    /// - returns array of bubbles destroyed directly by a power bubble and chained effect
+    private func handlePowerBubble(powerBubble: GridBubble, snappedBubble: GridBubble) -> [GridBubble] {
+        var destroyedBubbles = [GridBubble]()
         switch powerBubble.getPower() {
         case BubblePower.lightning:
-            affectedBubbles = gridData.getBubblesInRow(powerBubble.getRow())
-            // use recursion for chain reaction
-            let chainedBubbles = containsPowerBubble(affectedBubbles)
-            removeFromGridData(affectedBubbles)
+            destroyedBubbles = gridData.getBubblesInRow(powerBubble.getRow())
+            let chainedBubbles = containsPowerBubble(destroyedBubbles)
+            removeFromGridData(destroyedBubbles)
             if !chainedBubbles.isEmpty {
                 for chainedBubble in chainedBubbles {
-                    affectedBubbles.appendContentsOf(handlePowerBubble(chainedBubble, snappedBubble: snappedBubble))
+                    destroyedBubbles.appendContentsOf(handlePowerBubble(chainedBubble, snappedBubble: snappedBubble))
                 }
             }
         case BubblePower.bomb:
-            affectedBubbles = getNeighbours(powerBubble)
-            let chainedBubbles = containsPowerBubble(affectedBubbles)
-            removeFromGridData(affectedBubbles)
+            destroyedBubbles = getNeighbours(powerBubble)
+            let chainedBubbles = containsPowerBubble(destroyedBubbles)
+            removeFromGridData(destroyedBubbles)
             if !chainedBubbles.isEmpty {
                 for chainedBubble in chainedBubbles {
-                    affectedBubbles.appendContentsOf(handlePowerBubble(chainedBubble, snappedBubble: snappedBubble))
+                    destroyedBubbles.appendContentsOf(handlePowerBubble(chainedBubble, snappedBubble: snappedBubble))
                 }
             }
         case BubblePower.star:
-            affectedBubbles = gridData.getBubblesOfColor(snappedBubble.getColor())
-            let chainedBubbles = containsPowerBubble(affectedBubbles)
-            removeFromGridData(affectedBubbles)
+            destroyedBubbles = gridData.getBubblesOfColor(snappedBubble.getColor())
+            let chainedBubbles = containsPowerBubble(destroyedBubbles)
+            removeFromGridData(destroyedBubbles)
             if !chainedBubbles.isEmpty {
                 for chainedBubble in chainedBubbles {
-                    affectedBubbles.appendContentsOf(handlePowerBubble(chainedBubble, snappedBubble: snappedBubble))
+                    destroyedBubbles.appendContentsOf(handlePowerBubble(chainedBubble, snappedBubble: snappedBubble))
                 }
             }
         default:
             break
         }
-        affectedBubbles.append(powerBubble)
-        return affectedBubbles
+        destroyedBubbles.append(powerBubble)
+        return destroyedBubbles
     }
     
-    func containsPowerBubble(bubbleArray: [GridBubble]) -> [GridBubble] {
+    /// - returns whether an array of GridBubbles contain a power bubble
+    private func containsPowerBubble(bubbleArray: [GridBubble]) -> [GridBubble] {
         var powerBubbles = [GridBubble]()
         for bubble in bubbleArray {
             powerBubbles.append(bubble)
@@ -275,10 +287,12 @@ class GameEngine {
     /***************************************************/
     /******Handles collision with ordinary bubbles******/
     /***************************************************/
-    /// If attachedBubble is connected to at least 2 other bubbles of the same colour,
-    /// all connected bubbles of the same colour, as well as floating bubbles, will be removed from the grid
+     
+    /// If attachedBubble is connected to at least 2 other bubbles of the same colour, and is not connected to a 
+    /// power bubble, all connected bubbles of the same colour, as well as floating bubbles, will be removed from 
+    /// the grid
     /// - returns an array of all the bubbles that were removed
-    func getBubblesToBeRemoved(attachedBubble: GridBubble) -> [GridBubble] {
+    private func getBubblesToBeRemoved(attachedBubble: GridBubble) -> [GridBubble] {
         var removedBubbles = [GridBubble]()
         let connectedBubbles = findClusterBubbles(attachedBubble, areSameColour: true, reset: true)
         if connectedBubbles.count < 3 {
@@ -287,9 +301,10 @@ class GameEngine {
         removedBubbles.appendContentsOf(connectedBubbles)
         removeFromGridData(connectedBubbles)
         
+        // handle floating bubbles
         let floatingBubbles = findFloatingBubbles()
         removedBubbles.appendContentsOf(floatingBubbles)
-        removeFromGridData(floatingBubbles)         // will there be error removing launchedBubble again
+        removeFromGridData(floatingBubbles)
         
         return removedBubbles
     }
@@ -297,11 +312,11 @@ class GameEngine {
     /// Finds all the floating bubbles in the grid
     /// A bubble is floating if the cluster attached to it does not contain a bubble from the top row
     /// - returns an array of floating bubbles found
-    func findFloatingBubbles() -> [GridBubble] {
+    private func findFloatingBubbles() -> [GridBubble] {
         var floatingBubbles = [GridBubble]()
         resetMarkingOfBubbles()
         let bubbleArray = gridData.getBubbleArray()
-        for bubble in bubbleArray {//gridData!.getBubbleArray() {
+        for bubble in bubbleArray {
             if !bubble.isMarked() {
                 let cluster = findClusterBubbles(bubble, areSameColour: false, reset: true)
                 var floating = true
@@ -315,18 +330,17 @@ class GameEngine {
                 }
             }
         }
-        // print("finished finding floating")
         return floatingBubbles
     }
     
-    /// Finds a cluster of all the bubbles (of the same colour or not) connected directly/indirectly to it
+    /// Finds a cluster of all the bubbles (of the same colour or not) connected directly/indirectly to the start bubble
     /// - returns array of bubbles in the cluster found
-    func findClusterBubbles(startBubble: GridBubble, areSameColour: Bool, reset: Bool) -> [GridBubble] {
+    private func findClusterBubbles(startBubble: GridBubble, areSameColour: Bool, reset: Bool) -> [GridBubble] {
         if reset {
             resetMarkingOfBubbles()
         }
         
-        var unvisitedBubbles = [GridBubble]() //FIFO
+        var unvisitedBubbles = [GridBubble]()
         var currentBubble: GridBubble?
         var orderedElements = [GridBubble]()
         var neighbours: [GridBubble]
@@ -354,16 +368,15 @@ class GameEngine {
         return orderedElements
     }
     
-    // should put this in BubbleGrid
-    func resetMarkingOfBubbles() {
+    /// resets all bubbles in gridData to an unmarked state
+    private func resetMarkingOfBubbles() {
         for bubble in gridData.getBubbleArray() {
             bubble.unmark()
         }
     }
     
-    // should put this in BubbleGrid
     /// - returns array of all direct neighbouring bubbles with the same colour as param bubble
-    func getNeighboursOfSameColour(bubble: GridBubble) -> [GridBubble] {
+    private func getNeighboursOfSameColour(bubble: GridBubble) -> [GridBubble] {
         let allNeighbours = getNeighbours(bubble)
         var sameColouredNeighbours = [GridBubble]()
         for neighbour in allNeighbours {
@@ -374,31 +387,30 @@ class GameEngine {
         return sameColouredNeighbours
     }
     
-    // should put this in BubbleGrid
     /// - returns array of all direct neighbouring bubbles of param bubble
-    func getNeighbours(bubble: GridBubble) -> [GridBubble] {
+    private func getNeighbours(bubble: GridBubble) -> [GridBubble] {
         var neighbours = [GridBubble]()
         var start = 0
         if bubble.getRow()%2 == 0 {
             start--
         }
         // iterate through the row above, same row, and row below
-        for (var i = -1; i < 2; i++) {
-            let row = bubble.getRow() + i
+        for (var rowOffset = -1; rowOffset < 2; rowOffset++) {
+            let row = bubble.getRow() + rowOffset
             if !gridData.rowIsEmpty(row) {
                 continue
             }
             
-            if i != 0 { // neighbours from rows above and below
-                for (var j = start; j < 2 + start; j++) {
-                    let col = bubble.getCol() + j
+            if rowOffset != 0 { // neighbours from rows above and below
+                for (var colOffset = start; colOffset < 2 + start; colOffset++) {
+                    let col = bubble.getCol() + colOffset
                     if let neighbour = gridData.getBubble(row, col: col) {
                         neighbours.append(neighbour)
                     }
                 }
             } else {    // left and right neighbours
-                for (var j = -1; j < 2; j += 2) {
-                    let col = bubble.getCol() + j
+                for (var colOffset = -1; colOffset < 2; colOffset += 2) {
+                    let col = bubble.getCol() + colOffset
                     if let neighbour = gridData.getBubble(row, col: col) {
                         neighbours.append(neighbour)
                     }
@@ -409,10 +421,9 @@ class GameEngine {
     }
     
     /// Removes all items in param bubbles from the gridData
-    func removeFromGridData(bubbles: [GridBubble]) {
+    private func removeFromGridData(bubbles: [GridBubble]) {
         for bubble in bubbles {
             gridData.removeBubble(bubble.getRow(), col: bubble.getCol())
         }
     }
-
 }

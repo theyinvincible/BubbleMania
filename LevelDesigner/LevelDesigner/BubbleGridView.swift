@@ -15,11 +15,12 @@ class BubbleGridView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         var offsetX: CGFloat
-        var offsetY = frame.minY//yPos
+        var offsetY = frame.minY
         var numCols: Int
         let numRows = Constants.gridNumRows
         let cellWidth = frame.size.width/CGFloat(Constants.gridNumColsForEvenRow)
         
+        // set up a full grid view of empty bubble cells
         for row in 0..<numRows {
             if row%2 == 0 {
                 numCols = Constants.gridNumColsForEvenRow
@@ -34,22 +35,12 @@ class BubbleGridView: UIView {
                 addBubbleViewToStorage(bubbleCell)
                 offsetX += cellWidth
             }
-            //adjust cell's y offset so that rows are touching each other
             offsetY += (Constants.adjustRowSeparation) * cellWidth
         }
     }
     
-    ///  Helper function to add bubbleViews into the grid's data
-    private func addBubbleViewToStorage(bubbleView: BubbleView) {
-        let row = bubbleView.getRow()
-        let col = bubbleView.getCol()
-        if !bubbleViewStorage.keys.contains(row) {
-            bubbleViewStorage[row] = [Int: BubbleView]()
-        }
-        bubbleViewStorage[row]![col] = bubbleView
-    }
     
-    /// returns the bubble view for a bubble stored in a specific row and column
+    /// - returns the bubble view for a bubble stored in a specific row and column
     func getBubbleView(row: Int, col: Int) -> BubbleView? {
         if containsBubbleViewAtPosition(row, col: col) {
             return bubbleViewStorage[row]![col]
@@ -57,8 +48,8 @@ class BubbleGridView: UIView {
         return nil
     }
     
-    /// add a bubble view to the existing grid view
-    /// returns the newly added bubble view
+    /// adds a bubble view to the existing grid view
+    /// - returns the newly added bubble view
     func addBubbleView(row: Int, col: Int) -> BubbleView {
         var offsetX: CGFloat
         let cellWidth = frame.size.width/CGFloat(Constants.gridNumColsForEvenRow)
@@ -75,6 +66,16 @@ class BubbleGridView: UIView {
         return bubbleCell
     }
     
+    /// Helper function to add bubbleViews into the grid's data
+    private func addBubbleViewToStorage(bubbleView: BubbleView) {
+        let row = bubbleView.getRow()
+        let col = bubbleView.getCol()
+        if !bubbleViewStorage.keys.contains(row) {
+            bubbleViewStorage[row] = [Int: BubbleView]()
+        }
+        bubbleViewStorage[row]![col] = bubbleView
+    }
+    
     /// removes an existing bubble view from the grid
     func removeBubbleViewAtPosition(row: Int, col: Int) {
         if containsBubbleViewAtPosition(row, col: col) {
@@ -84,7 +85,8 @@ class BubbleGridView: UIView {
         }
     }
     
-    /// for level design
+    /// the grid view matches to display the BubbleGrid data given
+    /// *for loading level designs
     func setGridDesign(gridDesign: BubbleGrid) {
         for bubble in gridDesign.getBubbleArray() {
             let row = bubble.getRow()
@@ -98,7 +100,8 @@ class BubbleGridView: UIView {
         }
     }
     
-    /// instantiate a gridview based on a level design for game play
+    /// instantiates a gridview based on a BubbleGrid
+    /// *for game play
     init(frame: CGRect, gridDesign: BubbleGrid) {
         super.init(frame: frame)
         for bubble in gridDesign.getBubbleArray() {
@@ -117,7 +120,7 @@ class BubbleGridView: UIView {
         }
     }
     
-    /// returns Bool value of whether there exists a bubble view at (row, col)
+    /// - returns whether there exists a bubble view at (row, col)
     func containsBubbleViewAtPosition(row: Int, col: Int) -> Bool {
         if bubbleViewStorage.keys.contains(row) {
             if bubbleViewStorage[row]!.keys.contains(col) {

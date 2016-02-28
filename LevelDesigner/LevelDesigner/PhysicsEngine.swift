@@ -9,15 +9,15 @@
 import Foundation
 
 class PhysicsEngine {
-    var topBoundary = 0.0
-    var bottomBoundary = 0.0
-    var leftBoundary = 0.0
-    var rightBoundary = 0.0
-    var timeStep = 0.0
-    var isReflectingLeftWall = false
-    var isReflectingRightWall = false
-    var isReflectingBottomWall = false
-    var isReflectingTopWall = false
+    private var topBoundary = 0.0
+    private var bottomBoundary = 0.0
+    private var leftBoundary = 0.0
+    private var rightBoundary = 0.0
+    private var timeStep = 0.0
+    private var isReflectingLeftWall = false
+    private var isReflectingRightWall = false
+    private var isReflectingBottomWall = false
+    private var isReflectingTopWall = false
         
     init(topBound: Double, bottomBound: Double, leftBound: Double, rightBound: Double) {
         if (topBound < bottomBound) && (rightBound > leftBound) {

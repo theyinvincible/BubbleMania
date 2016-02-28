@@ -19,6 +19,8 @@ class BubbleGrid: NSObject, NSCoding {
         bubbleData = gridData
     }
     
+    /// adds a bubble to the grid
+    /// if there already exists a bubble in the spot given, that bubble is replaced
     func addBubble(bubble: GridBubble) {
         let row = bubble.getRow()
         let col = bubble.getCol()
@@ -28,6 +30,7 @@ class BubbleGrid: NSObject, NSCoding {
         bubbleData[row]![col] = bubble
     }
     
+    /// - returns a bubble in the location given
     func getBubble(row: Int, col: Int) -> GridBubble? {
         if containsBubble(row, col: col) {
             return bubbleData[row]![col]!
@@ -35,6 +38,7 @@ class BubbleGrid: NSObject, NSCoding {
         return nil
     }
     
+    /// - removes a bubble in the location given
     func removeBubble(row: Int, col: Int) {
         if containsBubble(row, col: col) {
             bubbleData[row]!.removeValueForKey(col)
@@ -44,13 +48,15 @@ class BubbleGrid: NSObject, NSCoding {
         }
     }
     
+    /// - returns whether a row in the grid is empty
     func rowIsEmpty(row: Int) -> Bool {
-        if bubbleData.keys.contains(row) {  //this wrong 
+        if bubbleData.keys.contains(row) {
             return true
         }
         return false
     }
     
+    /// removes all bubbles in the grid which do not have a color
     func removeAllEmptyBubbles() {
         let bubbles = getBubbleArray()
         for bubble in bubbles {
@@ -60,7 +66,7 @@ class BubbleGrid: NSObject, NSCoding {
         }
     }
     
-    /// returns bool value of whether there is a bubble stored in the design
+    /// - returns whether there is a bubble stored in the location given
     func containsBubble(row: Int, col: Int) -> Bool {
         if bubbleData.keys.contains(row) {
             if bubbleData[row]!.keys.contains(col) {
@@ -70,7 +76,7 @@ class BubbleGrid: NSObject, NSCoding {
         return false
     }
     
-    /// returns an array of bubbles which reside in the given row
+    /// - returns an array of bubbles which reside in the given row
     func getBubblesInRow(row: Int) -> [GridBubble] {
         var rowBubbles = [GridBubble]()
         if bubbleData.keys.contains(row) {
@@ -79,7 +85,7 @@ class BubbleGrid: NSObject, NSCoding {
         return rowBubbles
     }
     
-    /// enumerate all bubble views stored in the grid
+    /// enumerate all the bubbles stored in the grid
     func getBubbleArray() -> [GridBubble] {
         var bubbleArray = [GridBubble]()
         for key in bubbleData.keys {
@@ -88,7 +94,7 @@ class BubbleGrid: NSObject, NSCoding {
         return bubbleArray
     }
     
-    /// returns array of bubbles with the same color
+    /// returns an array of all the bubbles with the same color
     func getBubblesOfColor(color: BubbleColor) -> [GridBubble] {
         var coloredBubbles = [GridBubble]()
         for bubble in getBubbleArray() {
@@ -99,14 +105,14 @@ class BubbleGrid: NSObject, NSCoding {
         return coloredBubbles
     }
     
-    /// encodes a GridBubble object
+    /// encodes a BubbleGrid object
     func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(bubbleData, forKey: "grid")
+        coder.encodeObject(bubbleData, forKey: Constants.coderGridKey)
     }
     
-    /// reinstantiates an encoded GridBubble object
+    /// reinstantiates an encoded BubbleGrid object
     required convenience init(coder decoder: NSCoder) {
-        let gridData = decoder.decodeObjectForKey("grid") as! [Int: [Int: GridBubble]]
+        let gridData = decoder.decodeObjectForKey(Constants.coderGridKey) as! [Int: [Int: GridBubble]]
         self.init(gridData: gridData)
     }
 }

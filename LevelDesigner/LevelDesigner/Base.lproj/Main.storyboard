@@ -119,6 +119,9 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PSx-OC-mqz">
                                 <rect key="frame" x="20" y="974" width="52" height="30"/>
                                 <state key="normal" title="Back"/>
+                                <connections>
+                                    <action selector="backButtonSelected:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZBS-I9-ud1"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Np3-mk-PiC">
                                 <rect key="frame" x="80" y="974" width="73" height="30"/>
@@ -151,10 +154,54 @@
             </objects>
             <point key="canvasLocation" x="1439" y="261"/>
         </scene>
+        <!--Play Level View Controller-->
+        <scene sceneID="2eN-Z9-f8P">
+            <objects>
+                <viewController id="pR1-Rq-5ne" customClass="PlayLevelViewController" customModule="BubbleMania" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YRs-oo-ctN"/>
+                        <viewControllerLayoutGuide type="bottom" id="gXS-8S-AZh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="HoS-LD-Trp">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Rsa-vh-Jd9">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="861"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pet-zK-4PY">
+                                <rect key="frame" x="0.0" y="862" width="383" height="162"/>
+                                <color key="backgroundColor" red="0.16081456110796399" green="0.73314039811933784" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Button" image="BackButton"/>
+                                <connections>
+                                    <action selector="backButtonSelected:" destination="pR1-Rq-5ne" eventType="touchUpInside" id="upY-Y8-Xdv"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="acS-7d-KMm">
+                                <rect key="frame" x="384" y="861" width="384" height="162.5"/>
+                                <color key="backgroundColor" red="0.98453645211429941" green="1" blue="0.5967186969404028" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Button" image="PlayButton"/>
+                                <connections>
+                                    <action selector="playButtonSelected:" destination="pR1-Rq-5ne" eventType="touchUpInside" id="h79-Gp-i68"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <outlet property="tableView" destination="Rsa-vh-Jd9" id="115-MC-JY5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T2p-m0-yXv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="516" y="1435"/>
+        </scene>
         <!--Game View Controller-->
         <scene sceneID="kOE-hd-DOW">
             <objects>
-                <viewController storyboardIdentifier="GameEngine" id="d8c-WB-gGe" customClass="GameViewController" customModule="BubbleMania" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameScreen" id="d8c-WB-gGe" customClass="GameViewController" customModule="BubbleMania" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="487-zN-Ue1"/>
                         <viewControllerLayoutGuide type="bottom" id="Dee-x2-itl"/>
@@ -180,6 +227,13 @@
                                     <action selector="launchBubble:" destination="d8c-WB-gGe" eventType="touchUpInside" id="dAj-3f-brW"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KeZ-pc-GHE">
+                                <rect key="frame" x="465" y="900" width="82" height="46"/>
+                                <state key="normal" title="Pause"/>
+                                <connections>
+                                    <action selector="pause:" destination="d8c-WB-gGe" eventType="touchUpInside" id="zaV-qU-wg3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -187,16 +241,17 @@
                     <connections>
                         <outlet property="LaunchButton" destination="tsd-gv-cAR" id="ULt-Gy-oQP"/>
                         <outlet property="cannon" destination="Xth-X0-nAb" id="b0m-iG-NVW"/>
+                        <outlet property="pausebutton" destination="KeZ-pc-GHE" id="dfI-Of-k9f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kpz-Sy-JG5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1439" y="1435"/>
         </scene>
-        <!--View Controller-->
+        <!--Menu-->
         <scene sceneID="9uy-J3-SKA">
             <objects>
-                <viewController id="OQ0-9o-zlj" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MenuScreen" title="Menu" id="OQ0-9o-zlj" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="x8N-O2-QO3"/>
                         <viewControllerLayoutGuide type="bottom" id="QHH-bu-7sD"/>
@@ -210,13 +265,16 @@
                                 <color key="backgroundColor" red="0.43129254718036236" green="1" blue="0.6583037487833685" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Button" image="DesignLevel"/>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="XC3-T6-Gd6"/>
+                                    <segue destination="BYZ-38-t0r" kind="presentation" modalTransitionStyle="crossDissolve" id="XC3-T6-Gd6"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z4O-ea-JRU">
                                 <rect key="frame" x="164" y="619" width="440" height="81"/>
                                 <color key="backgroundColor" red="1" green="0.832483220513627" blue="0.57892157417535706" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Button" image="PlayLevel"/>
+                                <connections>
+                                    <segue destination="pR1-Rq-5ne" kind="presentation" modalTransitionStyle="crossDissolve" id="Ji6-va-dSQ"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BubbleMania logo" translatesAutoresizingMaskIntoConstraints="NO" id="aof-Lv-pgN">
                                 <rect key="frame" x="10" y="179" width="748" height="230"/>
@@ -232,8 +290,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="BackButton" width="500" height="200"/>
         <image name="BubbleMania logo" width="600" height="100"/>
         <image name="DesignLevel" width="600" height="100"/>
+        <image name="PlayButton" width="500" height="200"/>
         <image name="PlayLevel" width="600" height="100"/>
         <image name="cannon" width="400" height="600"/>
         <image name="cannon-base" width="400" height="200"/>

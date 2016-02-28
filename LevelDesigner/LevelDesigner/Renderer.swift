@@ -1,144 +1,144 @@
 //
-//  Renderer.swift
+//  NewRenderer.swift
 //  BubbleMania
 //
-//  Created by Jing Yin Ong on 13/2/16.
+//  Created by Jing Yin Ong on 28/2/16.
 //  Copyright © 2016 NUS CS3217. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
+/// Renders the screen for game play
 class Renderer {
-    private var data: BubbleGrid//[GridBubble]
-    private var removedBubbles: [GridBubble]
+    private var gridView: BubbleGridView
+    private var removedBubbleViews = [BubbleView]()
     private var launchedBubble: ProjectileBubble
     private var gameArea: UIView
     private let frame: CGRect
     private let bubbleDiameter: CGFloat
-    private var launchAngle: Double
-    private let numCols = 12
-    private let heightRatio = CGFloat(6.7/8)
-    private var prelaunchBubbles: [ProjectileBubble]
-    
-    private var needToRedrawGrid: Bool?
+    private var projectedTrajectory: CALayer?
+    private var isLaunching = false
+
     private var storedGridView: UIView?
-    private var storedPrelaunchBubblesView: [BubbleView]?
+    private var storedPrelaunchBubblesView = [BubbleView]()
+    private var projectileBubbleView: BubbleView?
+    private var animationCounter = 60
+    private var animationCount = 60
     
-    private let redBubbleImage = UIImage(named: "bubble-red.png")
-    private let orangeBubbleImage = UIImage(named: "bubble-orange.png")
-    private let greenBubbleImage = UIImage(named: "bubble-green.png")
-    private let blueBubbleImage = UIImage(named: "bubble-blue.png")
-    private let explodingBubbleImage = UIImage(named: "explodingBubble.png")
-    private let backgroundImage = UIImage(named: "background.png")
-    
-    init(data: BubbleGrid, launchedBubble: ProjectileBubble, frame: CGRect, launchAngle: Double, prelaunchBubbles: [ProjectileBubble]) {
-        self.data = data
+    init(data: BubbleGrid, launchedBubble: ProjectileBubble, frame: CGRect) {//, prelaunchBubbles: [ProjectileBubble]) {
+        self.gridView = BubbleGridView(frame: frame, gridDesign: data)
         self.launchedBubble = launchedBubble
-        self.removedBubbles = [GridBubble]()
         self.frame = frame
         self.gameArea = UIView(frame: frame)
-        self.launchAngle = launchAngle
-        self.needToRedrawGrid = true
-        self.prelaunchBubbles = prelaunchBubbles
-        bubbleDiameter = frame.size.width/CGFloat(numCols)
-    }
-    
-    /// Updates the grid data
-    func update(data: BubbleGrid, launchedBubble: ProjectileBubble, removedBubbles: [GridBubble], launchAngle: Double, prelaunchBubbles: [ProjectileBubble]) {
-        self.data = data
-        self.launchedBubble = launchedBubble
-        self.removedBubbles = removedBubbles
-        self.launchAngle = launchAngle
-        self.prelaunchBubbles = prelaunchBubbles
-        self.needToRedrawGrid = true
-        self.gameArea = UIView(frame: frame)
+        bubbleDiameter = frame.size.width/CGFloat(Constants.gridNumColsForEvenRow)
         setBackgroundView()
+        gameArea.addSubview(gridView)
     }
     
-    /// updates everything else
-    func update(launchedBubble: ProjectileBubble, removedBubbles: [GridBubble], launchAngle: Double) {
+    /// sets the background image of the play screen
+    func setBackgroundView() {
+        let backgroundImage = Constants.backgroundImage!
+        let background = UIImageView(image: backgroundImage)
+        let gameViewHeight = gameArea.frame.size.height
+        let gameViewWidth = gameArea.frame.size.width
+        background.frame = CGRectMake(0, 0, gameViewWidth, gameViewHeight)
+        self.gameArea.addSubview(background)
+    }
+    
+    /// updates the renderer on bubbles that have been snapped to/removed from the grid
+    func updateGrid(snappedBubble: GridBubble, removedBubbles: [GridBubble]) {
+        isLaunching = false
+        projectileBubbleView?.removeFromSuperview()
+        let snappedBubbleView = gridView.addBubbleView(snappedBubble.getRow(), col: snappedBubble.getCol())
+        snappedBubbleView.setColor(snappedBubble.getColor())
+        removedBubbleViews = [BubbleView]()
+        for bubble in removedBubbles {
+            let bubbleView = gridView.getBubbleView(bubble.getRow(), col: bubble.getCol())
+            removedBubbleViews.append(bubbleView!)
+        }
+    }
+    
+    /// updates the renderer on the bubble being launched
+    func updateLaunchedBubble(launchedBubble: ProjectileBubble) {
+        isLaunching = true
         self.launchedBubble = launchedBubble
-        self.removedBubbles = removedBubbles
-        self.launchAngle = launchAngle
-        self.needToRedrawGrid = false
-        self.gameArea = UIView(frame: frame)
-        setBackgroundView()
     }
     
-    /// redraws scene based on existing information
-    func redraw() -> UIView {
-        
-        // draw bubble grid with data
-        var xPos, yPos: CGFloat
-        if needToRedrawGrid! {
-            storedGridView = redrawGrid()
-            updatePrelaunchBubblesDisplay()
+    /// updates the renderer on the bubbles to be previewed, which the renderer then displays
+    func updatePrelaunchBubbles(prelaunchBubbles: [ProjectileBubble]) {
+        // remove display of previous launch bubbles preview
+        for prevBubbleView in storedPrelaunchBubblesView {
+            prevBubbleView.removeFromSuperview()
         }
-        gameArea.addSubview(storedGridView!)
-        
-        // draw dashed lines indicating angle of launch
-        redrawDashedLines()
-        
-        // draw projectile bubble
-        xPos = CGFloat(launchedBubble.getXPos())
-        yPos = CGFloat(launchedBubble.getYPos())
-        let projectileBubbleView = BubbleView(frame: CGRectMake(xPos, yPos, bubbleDiameter, bubbleDiameter), row: -1, col: -1)//UIView(frame: CGRectMake(xPos, yPos, bubbleDiameter, bubbleDiameter))
-        projectileBubbleView.setColor(launchedBubble.getColor())
-       // initBubbleCellView(projectileBubbleView)
-        //setBubbleViewWithColor(projectileBubbleView, color: (launchedBubble?.getColor())!)
-        gameArea.addSubview(projectileBubbleView)
-        
-        //pre launch bubbles
-        for prelaunchBubbleView in storedPrelaunchBubblesView! {
-            gameArea.addSubview(prelaunchBubbleView)
-        }
-        
-        // animate removal of bubbles
-        for bubbleToBeRemoved in removedBubbles {
-            // get position
-            let row = bubbleToBeRemoved.getRow()
-            let col = bubbleToBeRemoved.getCol()
-            if row%2 == 0{
-                xPos = CGFloat(col) * bubbleDiameter
-            } else {
-                xPos = (CGFloat(col) + CGFloat(0.5)) * bubbleDiameter
-            }
-            yPos = (CGFloat(row) * heightRatio * bubbleDiameter)
-            
-            let explodingBubbleView = UIView(frame: CGRectMake(xPos, yPos, bubbleDiameter, bubbleDiameter))
-            explodingBubbleView.backgroundColor = UIColor(patternImage: scaleImage(explodingBubbleImage!, view: explodingBubbleView))
-            gameArea.addSubview(explodingBubbleView)
-        }
-        return gameArea
-    }
-    
-    func updatePrelaunchBubblesDisplay() {
-        storedPrelaunchBubblesView = [BubbleView]()
+        storedPrelaunchBubblesView.removeAll()
+        // displays the new set of preview launch bubbles
         for i in 0..<prelaunchBubbles.count {
             let prelaunchBubble = prelaunchBubbles[i]
             let prelaunchBubbleView = BubbleView(frame: CGRectMake(CGFloat(2+i)*bubbleDiameter + gameArea.frame.width/2, gameArea.frame.height - bubbleDiameter, bubbleDiameter, bubbleDiameter), row: -1, col: -1)
             prelaunchBubbleView.setColor(prelaunchBubble.getColor())
-            storedPrelaunchBubblesView?.append(prelaunchBubbleView)
-            //gameArea!.addSubview(prelaunchBubbleView)
+            storedPrelaunchBubblesView.append(prelaunchBubbleView)
+            gameArea.addSubview(prelaunchBubbleView)
         }
     }
-
     
-    /// Redraws the grid view
-    /// - returns the grid view
-    func redrawGrid() -> UIView {
-        let gameAreaFrame = gameArea.frame
-        let gridView = BubbleGridView(frame: gameAreaFrame, gridDesign: data)
-        return gridView
+    /// draws a dashed line indicating the potential trajectory of a bubble when it is launched, based on the angle that was chosen
+    func redrawProjectedTrajectory(angle: Double) {
+        if projectedTrajectory != nil {
+            projectedTrajectory?.removeFromSuperlayer()
+        }
+        projectedTrajectory = drawDashedLine(gameArea.frame.width/2, startYPos: gameArea.frame.height - bubbleDiameter/2, length: 300, angle: CGFloat(angle))
     }
     
-    /// Redraws the dashed line indicating angle of launch
-    func redrawDashedLines() {
-        drawDashedLine(gameArea.frame.width/2, startYPos: gameArea.frame.height - bubbleDiameter/2, length: 300, angle: CGFloat(launchAngle))
+    /// returns the view of the game screen
+    func redraw() -> UIView {
+        if removedBubbleViews.isEmpty {
+            redrawLaunchedBubble()
+        } else {
+            if projectileBubbleView?.superview != nil {
+                projectileBubbleView!.removeFromSuperview()
+            }
+            // animates removal of bubbles, which fades away
+            if animationCounter == 0 {
+                for bubbleView in removedBubbleViews {
+                    gridView.removeBubbleViewAtPosition(bubbleView.getRow(), col: bubbleView.getCol())
+                }
+                removedBubbleViews.removeAll()
+                animationCounter = 60
+            } else if animationCounter < 20 {
+                for bubbleView in removedBubbleViews {
+                    bubbleView.alpha = 0.2
+                }
+            } else if animationCounter < 40 {
+                for bubbleView in removedBubbleViews {
+                    bubbleView.alpha = 0.5
+                }
+            } else {
+                for bubbleView in removedBubbleViews {
+                    bubbleView.alpha = 0.7
+                }
+            }
+            animationCounter--
+        }
+        return gameArea
+    }
+    
+    /// draws the projectile bubble that is being launched
+    func redrawLaunchedBubble() {
+        if projectileBubbleView != nil {
+            projectileBubbleView!.removeFromSuperview()
+        }
+        if isLaunching{
+            let xPos = CGFloat(launchedBubble.getXPos())
+            let yPos = CGFloat(launchedBubble.getYPos())
+            projectileBubbleView = BubbleView(frame: CGRectMake(xPos, yPos, bubbleDiameter, bubbleDiameter), row: -1, col: -1)
+            projectileBubbleView!.setColor(launchedBubble.getColor())
+            gameArea.addSubview(projectileBubbleView!)
+        }
     }
     
     /// Draws a dashed line with the given parameters
-    func drawDashedLine(startXPos: CGFloat, startYPos: CGFloat, length: CGFloat, angle: CGFloat) {
+    func drawDashedLine(startXPos: CGFloat, startYPos: CGFloat, length: CGFloat, angle: CGFloat) -> CALayer {
         let dashes: [CGFloat] = [8, 4]
         
         // set shape layer
@@ -160,48 +160,7 @@ class Renderer {
         shapeLayer.path = path
         
         gameArea.layer.addSublayer(shapeLayer)
+        return shapeLayer
     }
     
-    func setBackgroundView() {
-        let backgroundImage = UIImage(named: "background.png")  //put into constants
-        let background = UIImageView(image: backgroundImage)
-        let gameViewHeight = gameArea.frame.size.height
-        let gameViewWidth = gameArea.frame.size.width
-        background.frame = CGRectMake(0, 0, gameViewWidth, gameViewHeight)
-        self.gameArea.addSubview(background)
-    }
-    
-    /// Draws the background
-    /// - returns background view
-    func drawBackgroundView(frame: CGRect) -> UIView {
-        let view  = UIView.init(frame: frame)
-        let background = UIImageView(image: backgroundImage)
-        let gameViewHeight = view.frame.size.height
-        let gameViewWidth = view.frame.size.width
-        background.frame = CGRectMake(0, 0, gameViewWidth, gameViewHeight)
-        view.addSubview(background)
-        return view
-    }
-    
-    /// initialize bubble format of cell
-    func initBubbleCellView(bubbleCell: UIView) {
-        bubbleCell.layer.cornerRadius = bubbleCell.frame.size.width/2
-        bubbleCell.clipsToBounds = true
-        bubbleCell.layer.borderColor = UIColor.blackColor().CGColor
-        bubbleCell.layer.borderWidth = 2.0
-    }
-    
-
-    /// scales an image to fit the given view
-    func scaleImage(image: UIImage, view: UIView) -> UIImage {
-        let size = view.frame.size
-        let hasAlpha = true
-        let scale: CGFloat = 0.0
-        UIGraphicsBeginImageContextWithOptions(size, !hasAlpha, scale)
-        image.drawInRect(CGRect(origin: CGPointZero, size: size))
-        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return scaledImage
-    }
-
 }

@@ -28,23 +28,26 @@ class BubbleView: UIView {
         backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.3)
     }
 
+    /// - returns the row of the bubble view
     func getRow() -> Int {
         return row
     }
     
+    /// - returns the col of the bubble view
     func getCol() -> Int {
         return col
     }
     
+    /// - returns the color of the bubble view
     func getColor() -> BubbleColor {
         return color
     }
     
-    // Sets the view of the bubble to the color given in the parameter
+    /// sets the view of the bubble to the color given in the parameter
     func setColor(newColor: BubbleColor) {
         switch newColor {
         case BubbleColor.uninitalized:
-            backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.3)
+            backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(Constants.uninitializedColorAlpha)
             color = newColor
             power = BubblePower.none
         case BubbleColor.red:
@@ -64,10 +67,11 @@ class BubbleView: UIView {
             color = newColor
             power = BubblePower.none
         default:
-            break           // how to do setting of power
+            break
         }
     }
     
+    /// sets the power property of the bubble view
     func setPower(newPower: BubblePower) {
         switch newPower {
         case BubblePower.lightning:
@@ -91,11 +95,12 @@ class BubbleView: UIView {
         }
     }
     
+    /// - returns the power of the bubble
     func getPower() -> BubblePower {
         return power
     }
     
-    /// Next color is set in a cycle sequence of red -> orange -> green -> blue -> red.
+    /// - returns the next color in a cycle sequence of red -> orange -> green -> blue -> red.
     func setNextCycleColor() {
         var newColor = BubbleColor.uninitalized
         switch color {

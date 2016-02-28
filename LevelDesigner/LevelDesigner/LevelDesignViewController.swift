@@ -44,7 +44,7 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
         panGesture.minimumNumberOfTouches = 1
         panGesture.maximumNumberOfTouches = 1
         panGesture.delegate = self
-        gameArea.addGestureRecognizer(panGesture)           // pan gesture should be added to BubbleGridView
+        gameArea.addGestureRecognizer(panGesture)
 
         let tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
         tapGesture.delegate = self
@@ -68,7 +68,7 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
 
     /// Sets the background view of the level design
     private func setBackgroundView() {
-        let backgroundImage = UIImage(named: "background.png")  //put into constants
+        let backgroundImage = Constants.backgroundImage
         let background = UIImageView(image: backgroundImage)
         let gameViewHeight = gameArea.frame.size.height
         let gameViewWidth = gameArea.frame.size.width
@@ -86,7 +86,7 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
             if drawingMode != DrawMode.unselected {
                 let selectedBubbleView = hitView as? BubbleView
                 if selectedBubbleView != nil {
-                    updateBubbleCellView(selectedBubbleView!)       //cannot use update bubble cell view
+                    updateBubbleCellView(selectedBubbleView!)
                 }
             }
         }
@@ -146,7 +146,7 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
     private func updateBubbleCellView(selectedView: BubbleView) {
         switch drawingMode {
         case DrawMode.unselected:
-            selectedView.setNextCycleColor()    // for tap purposes
+            selectedView.setNextCycleColor() //for tap purposes
         case DrawMode.drawRed:
             selectedView.setColor(BubbleColor.red)
         case DrawMode.drawOrange:
@@ -166,9 +166,6 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
         case DrawMode.drawStar:
             selectedView.setPower(BubblePower.star)
         }
-     //   if newBubbleColor != nil {
-   //         selectedView.setColor(newBubbleColor!)
-       // }
     }
 
     override func didReceiveMemoryWarning() {
@@ -176,6 +173,13 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func backButtonSelected(sender: AnyObject) {
+        let menuViewController = self.storyboard!.instantiateViewControllerWithIdentifier(Constants.menuViewControllerIdentifier)
+        menuViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+        self.presentViewController(menuViewController, animated: true, completion: nil)
+        
+    }
+    
     /// Updates drawingMode accordingly when a button is selected/unselected from the palette
     @IBAction func drawingModeSelected(sender: AnyObject) {
         if sender.isEqual(redBubble) {
@@ -199,14 +203,14 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
         }
         
         //handle deselection
-        currentSelectedPalette?.alpha = 0.6
+        currentSelectedPalette?.alpha = Constants.unselectedAlpha
         if sender.isEqual(currentSelectedPalette) {
             drawingMode = DrawMode.unselected
             currentSelectedPalette = nil
         } else {
             //indicate mode that was selected
             currentSelectedPalette = sender as? UIButton
-            currentSelectedPalette!.alpha = 1.0
+            currentSelectedPalette!.alpha = Constants.selectedAlpha
         }
     }
         
@@ -219,9 +223,9 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
     // - returns cell containing the name of a saved file
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        var cell = tableView.dequeueReusableCellWithIdentifier("mycell")
+        var cell = tableView.dequeueReusableCellWithIdentifier(Constants.loadTableCellIdentifier)
         if cell == nil {
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "mycell")
+            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: Constants.loadTableCellIdentifier)
         }
         cell?.separatorInset = UIEdgeInsetsZero
         cell?.preservesSuperviewLayoutMargins = false
@@ -232,10 +236,11 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
     }
     
     @IBAction func startButtonSelected() {
-        let gameEngineViewController = self.storyboard!.instantiateViewControllerWithIdentifier("GameEngine") as! GameViewController
+        let gameEngineViewController = self.storyboard!.instantiateViewControllerWithIdentifier(Constants.gameViewControllerIdentifier) as! GameViewController
         let currentLevelDesign = convertDataToModel()
         currentLevelDesign.removeAllEmptyBubbles()
         gameEngineViewController.setGridData(currentLevelDesign)
+        gameEngineViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
         self.presentViewController(gameEngineViewController, animated: true, completion: nil)
     }
     
@@ -256,49 +261,27 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
         do {
             savedFileNames = try filemanager.contentsOfDirectoryAtPath(documentDirectory.path!)
         } catch {
-            print("Failed to retrieve files from documents directory")
+            print(Constants.errorMessageFailedToRetrieveDocument)
         }
         
         // set view for showing list of saved files
-        let alert = UIAlertController(title: "Load Level", message: "Choose a level to load", preferredStyle: .Alert)
-        let viewController = UIViewController()
+        let alert = UIAlertController(title: Constants.loadTitle, message: Constants.loadMessage, preferredStyle: .Alert)
         let rect = CGRect(x: 0, y: 0, width: 272, height: alert.view.frame.height/4)
-        
-        let tableViewOfSavedFiles = UITableView(frame: rect)
-        tableViewOfSavedFiles.delegate = self
-        tableViewOfSavedFiles.dataSource = self
-        setLoadTableViewStyle(tableViewOfSavedFiles)
-        
-        viewController.preferredContentSize = rect.size
-        viewController.view.addSubview(tableViewOfSavedFiles)
-        viewController.view.bringSubviewToFront(tableViewOfSavedFiles)
-        
-        alert.setValue(viewController, forKey: "contentViewController")
+        let viewController = UIViewController()
+        let tableViewOfSavedFiles = getTableViewOfSavedCells(viewController, rect: rect)
+        alert.setValue(viewController, forKey: Constants.contentViewControllerKey)
 
         // set load, delete, and cancel actions in alert
-        let loadAction = UIAlertAction(title: "Load", style: .Default,  handler: {
+        let loadAction = UIAlertAction(title: Constants.loadButtonTitle, style: .Default,  handler: {
             (action:UIAlertAction) -> Void in
-            let pathToSelectedCell = tableViewOfSavedFiles.indexPathForSelectedRow
-            if pathToSelectedCell != nil {
-                let selectedFileName = tableViewOfSavedFiles.cellForRowAtIndexPath(pathToSelectedCell!)?.textLabel?.text
-                let loadedLevelData = self.getLevelData(selectedFileName!)
-                self.loadLevel(loadedLevelData)
-            }
+            self.handleLoadTableLoadButton(tableViewOfSavedFiles)
         })
-        let deleteAction = UIAlertAction(title: "Delete", style: .Default) {
+        
+        let deleteAction = UIAlertAction(title: Constants.deleteButtonTitle, style: .Default) {
             (action: UIAlertAction) -> Void in
-            let pathToSelectedCell = tableViewOfSavedFiles.indexPathForSelectedRow
-            if pathToSelectedCell != nil {
-                let removedFileName = tableViewOfSavedFiles.cellForRowAtIndexPath(pathToSelectedCell!)?.textLabel?.text
-                let pathToRemovedFile = self.documentDirectory.URLByAppendingPathComponent("\(removedFileName!)")
-                do {
-                    try filemanager.removeItemAtPath(pathToRemovedFile.path!)
-                } catch {
-                    print("Failed to delete file \(removedFileName)")
-                }
-            }
+            self.handleLoadTableDeleteButton(tableViewOfSavedFiles, filemanager: filemanager)
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Default) {
+        let cancelAction = UIAlertAction(title: Constants.cancelButtonTitle, style: .Default) {
         (action: UIAlertAction) -> Void in
         }
         
@@ -307,6 +290,43 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
         alert.addAction(cancelAction)
         
         presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    /// Handles action for when load button is selected in the load table
+    private func handleLoadTableLoadButton(tableViewOfSavedFiles: UITableView) {
+        let pathToSelectedCell = tableViewOfSavedFiles.indexPathForSelectedRow
+        if pathToSelectedCell != nil {
+            let selectedFileName = tableViewOfSavedFiles.cellForRowAtIndexPath(pathToSelectedCell!)?.textLabel?.text
+            let loadedLevelData = getLevelData(selectedFileName!)
+            loadLevel(loadedLevelData)
+        }
+    }
+    
+    /// Handles action for when delete button is selected in the laod table
+    private func handleLoadTableDeleteButton(tableViewOfSavedFiles: UITableView, filemanager: NSFileManager) {
+        let pathToSelectedCell = tableViewOfSavedFiles.indexPathForSelectedRow
+        if pathToSelectedCell != nil {
+            let removedFileName = tableViewOfSavedFiles.cellForRowAtIndexPath(pathToSelectedCell!)?.textLabel?.text
+            let pathToRemovedFile = self.documentDirectory.URLByAppendingPathComponent("\(removedFileName!)")
+            do {
+                try filemanager.removeItemAtPath(pathToRemovedFile.path!)
+            } catch {
+                print(Constants.errorMessageFailedToDeleteFile)
+            }
+        }
+    }
+    
+    /// - Returns a table view of the saved level designs
+    private func getTableViewOfSavedCells(viewController: UIViewController, rect: CGRect) -> UITableView {
+        let tableViewOfSavedFiles = UITableView(frame: rect)
+        tableViewOfSavedFiles.delegate = self
+        tableViewOfSavedFiles.dataSource = self
+        setLoadTableViewStyle(tableViewOfSavedFiles)
+        
+        viewController.preferredContentSize = rect.size
+        viewController.view.addSubview(tableViewOfSavedFiles)
+        viewController.view.bringSubviewToFront(tableViewOfSavedFiles)
+        return tableViewOfSavedFiles
     }
     
     /// Sets the style of the table view in Load alert
@@ -328,9 +348,9 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
     }
     
     /// Retrieves data of a level design
-    private func getLevelData(fileName: String) -> BubbleGrid {    //[Int: [Int: GridBubble]]{
+    private func getLevelData(fileName: String) -> BubbleGrid {
         let archiveURL = documentDirectory.URLByAppendingPathComponent("\(fileName)")
-        return (NSKeyedUnarchiver.unarchiveObjectWithFile(archiveURL.path!) as? BubbleGrid)! //[Int: [Int: GridBubble]])!
+        return (NSKeyedUnarchiver.unarchiveObjectWithFile(archiveURL.path!) as? BubbleGrid)!
     }
     
     /// Takes in a file name and stores the level design's data into the path directory
@@ -339,7 +359,7 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
         let archiveURL = documentDirectory.URLByAppendingPathComponent("\(fileName)")
         let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(levelDesign, toFile: archiveURL.path!)
         if !isSuccessfulSave {
-            print("Failed to save level design")
+            print(Constants.errorMessageFailedToSaveFile)
         }
     }
     
@@ -359,17 +379,17 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
     /// Action performed when Save button is selected
     /// Current design will be saved with the file name input by user
     @IBAction func saveButtonSelected(sender: AnyObject) {
-        let alert = UIAlertController(title: "Save Level", message: "Enter a name for your saved level", preferredStyle: .Alert)
+        let alert = UIAlertController(title: Constants.saveTitle, message: Constants.saveMessage, preferredStyle: .Alert)
         
-        let saveAction = UIAlertAction(title: "Save", style: .Default,  handler: {
+        let saveAction = UIAlertAction(title: Constants.saveButtonTitle, style: .Default,  handler: {
             (action:UIAlertAction) -> Void in
             let saveFileName = alert.textFields!.first!.text
-            if saveFileName != "" {
+            if saveFileName != Constants.emptyString {
                 self.saveData(saveFileName!)
             }
         })
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Default) {
+        let cancelAction = UIAlertAction(title: Constants.cancelButtonTitle, style: .Default) {
             (action: UIAlertAction) -> Void in
         }
         

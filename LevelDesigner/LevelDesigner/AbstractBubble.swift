@@ -21,6 +21,7 @@ class AbstractBubble: NSObject, NSCoding {
         self.color = color
     }
     
+    /// sets the color of the bubble
     func setColor(newColor: BubbleColor) {
         color = newColor
     }
@@ -35,22 +36,23 @@ class AbstractBubble: NSObject, NSCoding {
         return col
     }
     
+    /// returns the color of the bubble
     func getColor() -> BubbleColor {
         return color
     }
     
     /// encodes an AbstractBubble object
     func encodeWithCoder(coder: NSCoder) {
-        coder.encodeInteger(getRow(), forKey: "row")
-        coder.encodeInteger(getCol(), forKey: "col")
-        coder.encodeInteger(self.color.rawValue, forKey: "color")
+        coder.encodeInteger(getRow(), forKey: Constants.coderRowKey)
+        coder.encodeInteger(getCol(), forKey: Constants.coderColKey)
+        coder.encodeInteger(self.color.rawValue, forKey: Constants.coderColorKey)
     }
     
     /// reinstantiates an encoded AbstractBubble object
     required convenience init(coder decoder: NSCoder) {
-        let row = decoder.decodeIntegerForKey("row")
-        let col = decoder.decodeIntegerForKey("col")
-        let color = decoder.decodeIntegerForKey("color")
+        let row = decoder.decodeIntegerForKey(Constants.coderRowKey)
+        let col = decoder.decodeIntegerForKey(Constants.coderColKey)
+        let color = decoder.decodeIntegerForKey(Constants.coderColorKey)
         self.init(row: row, col: col, color: BubbleColor(rawValue: color)!)
     }
 }
