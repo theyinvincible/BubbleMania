@@ -232,7 +232,7 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
     }
     
     @IBAction func startButtonSelected() {
-        let gameEngineViewController = self.storyboard!.instantiateViewControllerWithIdentifier("GameEngine") as! GameEngine
+        let gameEngineViewController = self.storyboard!.instantiateViewControllerWithIdentifier("GameEngine") as! GameViewController
         let currentLevelDesign = convertDataToModel()
         currentLevelDesign.removeAllEmptyBubbles()
         gameEngineViewController.setGridDesign(currentLevelDesign)

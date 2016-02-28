@@ -9,7 +9,7 @@
 import UIKit
 import Darwin
 
-class GameEngine: UIViewController, UIGestureRecognizerDelegate {
+class GameViewController: UIViewController, UIGestureRecognizerDelegate {
     private var launchBubblePosition: [CGFloat] = [0, 0]
     private var angleOfLaunchedBubble = M_PI/2
     private var launchAngle = M_PI/2
@@ -18,6 +18,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet var cannon: UIView!
     private var launchBubble = ProjectileBubble(xPos: -1, yPos: -1)
     private var prelaunchBubbles = [ProjectileBubble]()
+    private var numPrelaunchBubbles = 3;
     
     private var bubbleDiameter: CGFloat?
     private var currentFrame: UIView?
@@ -36,9 +37,6 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       // cannon.layer.anchorPoint = CGPointMake(0.5, 1)
-       // cannon.center = CGPoint(x: cannon.frame.size.width/2, y: cannon.frame.size.height)
-        
         
         // initialize values
         bubbleDiameter = self.view.frame.size.width/CGFloat(12)
@@ -50,7 +48,8 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
 
-        generateLaunchBubble()
+        // set first launch bubble
+        initLaunchBubbles()
         
         // initialize physics engine
         physicsEngine = PhysicsEngine(topBound: Double(self.view.frame.minY), bottomBound: Double(self.view.frame.height), leftBound: Double(self.view.frame.minX)
@@ -59,15 +58,34 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
         physicsEngine!.setReflectionOfProjectile(false, bottom: true, right: true, left: true)
         
         // draws initial scene
-        renderer = Renderer(data: gridData!, launchedBubble: launchBubble, frame: self.view.frame, launchAngle: launchAngle)
+        renderer = Renderer(data: gridData!, launchedBubble: launchBubble, frame: self.view.frame, launchAngle: launchAngle, prelaunchBubbles: prelaunchBubbles)
         currentFrame = renderer!.redraw()
         self.view.addSubview(currentFrame!)
         self.view.bringSubviewToFront(LaunchButton)
         
         // redraws scene at 60 frames per second
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1/60, target: self, selector: "updateView", userInfo: nil, repeats: true)
+        _ = NSTimer.scheduledTimerWithTimeInterval(1/60, target: self, selector: "updateView", userInfo: nil, repeats: true)
     }
     
+    func initLaunchBubbles() {
+        for _ in 1...numPrelaunchBubbles {
+            prelaunchBubbles.append(generateLaunchBubble())
+        }
+        launchBubble = prelaunchBubbles.first!
+    }
+    
+    /// removes the original launch bubble and appends a new projectile bubble
+    func updateLaunchBubbles() {
+        if !prelaunchBubbles.isEmpty {
+            prelaunchBubbles.removeFirst()
+            prelaunchBubbles.append(generateLaunchBubble())
+        }
+        if !prelaunchBubbles.isEmpty {
+            launchBubble = prelaunchBubbles.first!
+        }
+    }
+    
+        
     var counter = 0
     /// updates positions of objects and renders the frame accordingly
     func updateView() {
@@ -99,7 +117,7 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
             if detectCollision() {
                 lastSnappedBubble = snapBubble()
                 bubbleIsLaunching = false
-                generateLaunchBubble()
+                updateLaunchBubbles()
                 gridIsChanged = true
             }
         }
@@ -113,19 +131,19 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
 
         // redraw scene
         if gridIsChanged {
-            renderer!.update(gridData!, launchedBubble: launchBubble, removedBubbles: bubblesToBeRemoved, launchAngle: launchAngle)
+            renderer!.update(gridData!, launchedBubble: launchBubble, removedBubbles: bubblesToBeRemoved, launchAngle: launchAngle, prelaunchBubbles: prelaunchBubbles)
         } else {
             renderer!.update(launchBubble, removedBubbles: bubblesToBeRemoved, launchAngle: launchAngle)
         }
-        
         currentFrame = renderer!.redraw()
         self.view.addSubview(currentFrame!)
         
-      //  cannon.transform = CGAffineTransformTranslate(cannon.transform, 0, 200)
+        // draw cannon
         cannon.transform = CGAffineTransformMakeRotation(CGFloat(M_PI/2 - launchAngle))
-//        cannon.transform = CGAffineTransformTranslate(cannon.transform, 0, 180)
         self.view.addSubview(cannon)
         self.view.bringSubviewToFront(LaunchButton)
+        
+       // displayPrelaunchBubbles()
     }
     
     func getBubblesRemovedWithPower(snappedBubble: GridBubble) -> [GridBubble] {
@@ -205,11 +223,12 @@ class GameEngine: UIViewController, UIGestureRecognizerDelegate {
 
     
     /// generates and sets the launchBubble as a projectile bubble with a random colour
-    func generateLaunchBubble() {
+    func generateLaunchBubble() -> ProjectileBubble {
         let randomInt = Int(arc4random_uniform(4)) + 1
         let color = BubbleColor(rawValue: randomInt)
-        launchBubble = ProjectileBubble(xPos: Double(launchBubblePosition[0]), yPos: Double(launchBubblePosition[1]))
-        launchBubble.setColor(color!)
+        let bubble = ProjectileBubble(xPos: Double(launchBubblePosition[0]), yPos: Double(launchBubblePosition[1]))
+        bubble.setColor(color!)
+        return bubble
     }
 
     /// Handles launch button, launches the projectile bubble launchBubble
