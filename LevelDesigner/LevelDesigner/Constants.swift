@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 struct Constants {
+    static let emptyString = ""
+
     // image files
     static let redBubbleImageFile = "bubble-red.png"
     static let blueBubbleImageFile = "bubble-blue.png"
@@ -22,6 +24,7 @@ struct Constants {
     static let eraserImageFile = "eraser-1.png"
     static let backgroundImageFile = "background.png"
 
+    // images
     static let redBubbleImage = UIImage(named: redBubbleImageFile)
     static let orangeBubbleImage = UIImage(named: orangeBubbleImageFile)
     static let greenBubbleImage = UIImage(named: greenBubbleImageFile)
@@ -33,25 +36,24 @@ struct Constants {
     static let eraserImage = UIImage(named: eraserImageFile)
     static let backgroundImage = UIImage(named: backgroundImageFile)
     
+    // transparency factrs
     static let uninitializedColorAlpha = CGFloat(0.3)
     static let unselectedAlpha =  CGFloat(0.6)
     static let selectedAlpha = CGFloat(1.0)
     static let firstPhaseAlpha = CGFloat(0.7)
     static let secondPhaseAlpha = CGFloat(0.5)
     static let thirdPhaseAlpha = CGFloat(0.3)
-    
-    static let numPreviewBubbles = 3
-    static let animationCount = 15
-    
-    static let emptyString = ""
-    
+ 
+    // identifiers
     static let playLevelTableCellIdentifier = "cell"
     static let loadTableCellIdentifier = "mycell"
     static let gameViewControllerIdentifier = "GameScreen"
     static let menuViewControllerIdentifier = "MenuScreen"
     static let playLevelViewControllerIdentifier = "PlayLevelScreen"
     static let levelDesignViewControllerIdentifier = "LevelDesignScreen"
-    
+    static let contentViewControllerKey = "contentViewController"
+   
+    // level design alert messages
     static let errorMessageFailedToRetrieveDocument = "Failed to retrieve files from documents directory"
     static let errorMessageFailedToDeleteFile = "Failed to delete file"
     static let errorMessageFailedToSaveFile = "Failed to save level design"
@@ -64,9 +66,7 @@ struct Constants {
     static let deleteButtonTitle = "Delete"
     static let cancelButtonTitle = "Cancel"
 
-    static let contentViewControllerKey = "contentViewController"
-    
-    
+    // decoder/encoder keys
     static let coderRowKey = "row"
     static let coderColKey = "col"
     static let coderColorKey = "color"
@@ -83,10 +83,16 @@ struct Constants {
     static let timeStep = 1.0
     static let bubbleVelocity = 7.0
     
+    // renderer constants
     static let numberOfRandomizedColours = UInt32(4)
     static let adjustCentre = 0.5
     static let adjustCentreForOddRow = 1
-    
     static let startingLaunchAngle = M_PI/2
+    static let numPreviewBubbles = 3
+    static let animationCount = 15
+    
+    // play level constants
+    static let playLevelTextFont = "Arial"
+    static let playLevelTextSize = CGFloat(48)
 }
 

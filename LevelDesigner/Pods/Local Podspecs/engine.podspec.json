@@ -1,0 +1,19 @@
+{
+  "name": "engine",
+  "version": "0.0.6",
+  "summary": "NUS CS3217 Problem Set 5 physics engine.",
+  "description": "A physics engine that provides path calculation and collision detection.",
+  "homepage": "https://bitbucket.org/cs3217/2016-ps5-pod-a0131465",
+  "license": "",
+  "authors": {
+    "Jing Yin": "ongjingyin@yahoo.com.sg"
+  },
+  "platforms": {
+    "ios": "8.1"
+  },
+  "source": {
+    "git": "https://theyinvincible@bitbucket.org/cs3217/2016-ps5-pod-a0131465.git",
+    "tag": "0.0.6"
+  },
+  "source_files": "PhysicsEngine.swift"
+}

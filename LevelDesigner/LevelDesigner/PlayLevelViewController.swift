@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 class PlayLevelViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
     @IBOutlet var tableView: UITableView!
     private let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
     private var savedFileNames: [String]?
@@ -48,7 +47,7 @@ class PlayLevelViewController: UIViewController, UITableViewDataSource, UITableV
         cell!.layoutMargins = UIEdgeInsetsZero
         cell!.textLabel?.adjustsFontSizeToFitWidth = true
         cell!.textLabel?.text = savedFileNames![indexPath.row]
-        cell!.textLabel?.font = UIFont(name: "Arial", size: 48)
+        cell!.textLabel?.font = UIFont(name: Constants.playLevelTextFont, size: Constants.playLevelTextSize)
         return cell!
     }
     
@@ -92,27 +91,4 @@ class PlayLevelViewController: UIViewController, UITableViewDataSource, UITableV
         let archiveURL = documentDirectory.URLByAppendingPathComponent("\(fileName)")
         return (NSKeyedUnarchiver.unarchiveObjectWithFile(archiveURL.path!) as? BubbleGrid)!
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

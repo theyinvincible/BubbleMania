@@ -1,0 +1,566 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0B9586039DFC0D4059ACE1C7 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7857DC80EA9B8AA50BC70F8D /* Pods.framework */; };
+		2523591D1C7C15FB007BC0A1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2523591C1C7C15FB007BC0A1 /* Constants.swift */; };
+		2523591F1C7C5FE9007BC0A1 /* BubbleGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2523591E1C7C5FE9007BC0A1 /* BubbleGridView.swift */; };
+		2572FFFE1C831D0F00141E08 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2572FFFD1C831D0F00141E08 /* PhysicsEngine.swift */; };
+		259A43FF1C5DD1E600217EF3 /* GridBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 259A43FE1C5DD1E600217EF3 /* GridBubble.swift */; };
+		25B64A181C67384B0053CFBE /* AbstractBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B64A171C67384B0053CFBE /* AbstractBubble.swift */; };
+		25C51F1C1C6D7815002342E1 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C51F1B1C6D7815002342E1 /* GameViewController.swift */; };
+		25E116711C704CE1002E8F55 /* PhysicsEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E116701C704CE1002E8F55 /* PhysicsEngineTests.swift */; };
+		25E147CA1C8296EA001B4068 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E147C91C8296EA001B4068 /* GameEngine.swift */; };
+		25E147CC1C82A4EA001B4068 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E147CB1C82A4EA001B4068 /* Renderer.swift */; };
+		25E222A81C6ED3D7006FF96E /* ProjectileBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E222A71C6ED3D7006FF96E /* ProjectileBubble.swift */; };
+		25E281F61C83021000C9D8B0 /* PlayLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E281F51C83021000C9D8B0 /* PlayLevelViewController.swift */; };
+		25E2A1781C7D748A00953B93 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E2A1771C7D748A00953B93 /* BubbleView.swift */; };
+		25E2A17A1C7D8B5F00953B93 /* BubbleGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E2A1791C7D8B5F00953B93 /* BubbleGrid.swift */; };
+		6D9CCE161A764766005AD4FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9CCE151A764766005AD4FA /* AppDelegate.swift */; };
+		6D9CCE181A764766005AD4FA /* LevelDesignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9CCE171A764766005AD4FA /* LevelDesignViewController.swift */; };
+		6D9CCE1B1A764766005AD4FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D9CCE191A764766005AD4FA /* Main.storyboard */; };
+		6D9CCE1D1A764766005AD4FA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D9CCE1C1A764766005AD4FA /* Images.xcassets */; };
+		6D9CCE201A764766005AD4FA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D9CCE1E1A764766005AD4FA /* LaunchScreen.xib */; };
+		6D9CCE2C1A764766005AD4FA /* LevelDesignerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9CCE2B1A764766005AD4FA /* LevelDesignerTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6D9CCE261A764766005AD4FA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D9CCE081A764766005AD4FA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6D9CCE0F1A764766005AD4FA;
+			remoteInfo = LevelDesigner;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2523591C1C7C15FB007BC0A1 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		2523591E1C7C5FE9007BC0A1 /* BubbleGridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleGridView.swift; sourceTree = "<group>"; };
+		2572FFFD1C831D0F00141E08 /* PhysicsEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsEngine.swift; sourceTree = "<group>"; };
+		259A43FE1C5DD1E600217EF3 /* GridBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridBubble.swift; sourceTree = "<group>"; };
+		25B64A171C67384B0053CFBE /* AbstractBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractBubble.swift; sourceTree = "<group>"; };
+		25C51F1B1C6D7815002342E1 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		25E116701C704CE1002E8F55 /* PhysicsEngineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsEngineTests.swift; sourceTree = "<group>"; };
+		25E147C91C8296EA001B4068 /* GameEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameEngine.swift; path = ../GameEngine.swift; sourceTree = "<group>"; };
+		25E147CB1C82A4EA001B4068 /* Renderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		25E222A71C6ED3D7006FF96E /* ProjectileBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectileBubble.swift; sourceTree = "<group>"; };
+		25E281F51C83021000C9D8B0 /* PlayLevelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayLevelViewController.swift; sourceTree = "<group>"; };
+		25E2A1771C7D748A00953B93 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		25E2A1791C7D8B5F00953B93 /* BubbleGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleGrid.swift; sourceTree = "<group>"; };
+		6B1A3DD99ED07F02A7525B63 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		6D9CCE101A764766005AD4FA /* BubbleMania.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BubbleMania.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D9CCE141A764766005AD4FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6D9CCE151A764766005AD4FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6D9CCE171A764766005AD4FA /* LevelDesignViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDesignViewController.swift; sourceTree = "<group>"; };
+		6D9CCE1A1A764766005AD4FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6D9CCE1C1A764766005AD4FA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6D9CCE1F1A764766005AD4FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		6D9CCE251A764766005AD4FA /* BubbleMania.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BubbleMania.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D9CCE2A1A764766005AD4FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6D9CCE2B1A764766005AD4FA /* LevelDesignerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDesignerTests.swift; sourceTree = "<group>"; };
+		7857DC80EA9B8AA50BC70F8D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4166EAE2DE1D6AB05D92042 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6D9CCE0D1A764766005AD4FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B9586039DFC0D4059ACE1C7 /* Pods.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6D9CCE221A764766005AD4FA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		190ECBBC6E11C64F63804E41 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7857DC80EA9B8AA50BC70F8D /* Pods.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6D9CCE071A764766005AD4FA = {
+			isa = PBXGroup;
+			children = (
+				6D9CCE121A764766005AD4FA /* BubbleMania */,
+				6D9CCE281A764766005AD4FA /* BubbleManiaTests */,
+				6D9CCE111A764766005AD4FA /* Products */,
+				7B823D513689796CDAF217A7 /* Pods */,
+				190ECBBC6E11C64F63804E41 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		6D9CCE111A764766005AD4FA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6D9CCE101A764766005AD4FA /* BubbleMania.app */,
+				6D9CCE251A764766005AD4FA /* BubbleMania.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6D9CCE121A764766005AD4FA /* BubbleMania */ = {
+			isa = PBXGroup;
+			children = (
+				6D9CCE151A764766005AD4FA /* AppDelegate.swift */,
+				6D9CCE171A764766005AD4FA /* LevelDesignViewController.swift */,
+				25E2A1791C7D8B5F00953B93 /* BubbleGrid.swift */,
+				2523591E1C7C5FE9007BC0A1 /* BubbleGridView.swift */,
+				25E2A1771C7D748A00953B93 /* BubbleView.swift */,
+				2523591C1C7C15FB007BC0A1 /* Constants.swift */,
+				25C51F1B1C6D7815002342E1 /* GameViewController.swift */,
+				25E147C91C8296EA001B4068 /* GameEngine.swift */,
+				25E147CB1C82A4EA001B4068 /* Renderer.swift */,
+				25E281F51C83021000C9D8B0 /* PlayLevelViewController.swift */,
+				6D9CCE191A764766005AD4FA /* Main.storyboard */,
+				2572FFFD1C831D0F00141E08 /* PhysicsEngine.swift */,
+				259A43FE1C5DD1E600217EF3 /* GridBubble.swift */,
+				25B64A171C67384B0053CFBE /* AbstractBubble.swift */,
+				25E222A71C6ED3D7006FF96E /* ProjectileBubble.swift */,
+				6D9CCE1C1A764766005AD4FA /* Images.xcassets */,
+				6D9CCE1E1A764766005AD4FA /* LaunchScreen.xib */,
+				6D9CCE131A764766005AD4FA /* Supporting Files */,
+			);
+			name = BubbleMania;
+			path = LevelDesigner;
+			sourceTree = "<group>";
+		};
+		6D9CCE131A764766005AD4FA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6D9CCE141A764766005AD4FA /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6D9CCE281A764766005AD4FA /* BubbleManiaTests */ = {
+			isa = PBXGroup;
+			children = (
+				6D9CCE2B1A764766005AD4FA /* LevelDesignerTests.swift */,
+				25E116701C704CE1002E8F55 /* PhysicsEngineTests.swift */,
+				6D9CCE291A764766005AD4FA /* Supporting Files */,
+			);
+			name = BubbleManiaTests;
+			path = LevelDesignerTests;
+			sourceTree = "<group>";
+		};
+		6D9CCE291A764766005AD4FA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6D9CCE2A1A764766005AD4FA /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7B823D513689796CDAF217A7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D4166EAE2DE1D6AB05D92042 /* Pods.debug.xcconfig */,
+				6B1A3DD99ED07F02A7525B63 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6D9CCE0F1A764766005AD4FA /* BubbleMania */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6D9CCE2F1A764766005AD4FA /* Build configuration list for PBXNativeTarget "BubbleMania" */;
+			buildPhases = (
+				73FE0F956EAB591F6ECF78A3 /* Check Pods Manifest.lock */,
+				6D9CCE0C1A764766005AD4FA /* Sources */,
+				6D9CCE0D1A764766005AD4FA /* Frameworks */,
+				6D9CCE0E1A764766005AD4FA /* Resources */,
+				E24CE788F6E149D3AC2FF7CC /* Embed Pods Frameworks */,
+				6D6D989006E5556F017ABF84 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BubbleMania;
+			productName = LevelDesigner;
+			productReference = 6D9CCE101A764766005AD4FA /* BubbleMania.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6D9CCE241A764766005AD4FA /* BubbleManiaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6D9CCE321A764766005AD4FA /* Build configuration list for PBXNativeTarget "BubbleManiaTests" */;
+			buildPhases = (
+				6D9CCE211A764766005AD4FA /* Sources */,
+				6D9CCE221A764766005AD4FA /* Frameworks */,
+				6D9CCE231A764766005AD4FA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6D9CCE271A764766005AD4FA /* PBXTargetDependency */,
+			);
+			name = BubbleManiaTests;
+			productName = LevelDesignerTests;
+			productReference = 6D9CCE251A764766005AD4FA /* BubbleMania.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6D9CCE081A764766005AD4FA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "NUS CS3217";
+				TargetAttributes = {
+					6D9CCE0F1A764766005AD4FA = {
+						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 8TQ7NZ853C;
+					};
+					6D9CCE241A764766005AD4FA = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = 6D9CCE0F1A764766005AD4FA;
+					};
+				};
+			};
+			buildConfigurationList = 6D9CCE0B1A764766005AD4FA /* Build configuration list for PBXProject "BubbleMania" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6D9CCE071A764766005AD4FA;
+			productRefGroup = 6D9CCE111A764766005AD4FA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6D9CCE0F1A764766005AD4FA /* BubbleMania */,
+				6D9CCE241A764766005AD4FA /* BubbleManiaTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6D9CCE0E1A764766005AD4FA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D9CCE1B1A764766005AD4FA /* Main.storyboard in Resources */,
+				6D9CCE201A764766005AD4FA /* LaunchScreen.xib in Resources */,
+				6D9CCE1D1A764766005AD4FA /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6D9CCE231A764766005AD4FA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6D6D989006E5556F017ABF84 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		73FE0F956EAB591F6ECF78A3 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E24CE788F6E149D3AC2FF7CC /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6D9CCE0C1A764766005AD4FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25C51F1C1C6D7815002342E1 /* GameViewController.swift in Sources */,
+				25E147CC1C82A4EA001B4068 /* Renderer.swift in Sources */,
+				25E147CA1C8296EA001B4068 /* GameEngine.swift in Sources */,
+				25E281F61C83021000C9D8B0 /* PlayLevelViewController.swift in Sources */,
+				6D9CCE181A764766005AD4FA /* LevelDesignViewController.swift in Sources */,
+				2572FFFE1C831D0F00141E08 /* PhysicsEngine.swift in Sources */,
+				259A43FF1C5DD1E600217EF3 /* GridBubble.swift in Sources */,
+				6D9CCE161A764766005AD4FA /* AppDelegate.swift in Sources */,
+				25E222A81C6ED3D7006FF96E /* ProjectileBubble.swift in Sources */,
+				25B64A181C67384B0053CFBE /* AbstractBubble.swift in Sources */,
+				25E2A1781C7D748A00953B93 /* BubbleView.swift in Sources */,
+				2523591F1C7C5FE9007BC0A1 /* BubbleGridView.swift in Sources */,
+				25E2A17A1C7D8B5F00953B93 /* BubbleGrid.swift in Sources */,
+				2523591D1C7C15FB007BC0A1 /* Constants.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6D9CCE211A764766005AD4FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D9CCE2C1A764766005AD4FA /* LevelDesignerTests.swift in Sources */,
+				25E116711C704CE1002E8F55 /* PhysicsEngineTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6D9CCE271A764766005AD4FA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6D9CCE0F1A764766005AD4FA /* BubbleMania */;
+			targetProxy = 6D9CCE261A764766005AD4FA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6D9CCE191A764766005AD4FA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6D9CCE1A1A764766005AD4FA /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		6D9CCE1E1A764766005AD4FA /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6D9CCE1F1A764766005AD4FA /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6D9CCE2D1A764766005AD4FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		6D9CCE2E1A764766005AD4FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6D9CCE301A764766005AD4FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4166EAE2DE1D6AB05D92042 /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = LevelDesigner/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = nus.cs3217.a0131465.LevelDesigner;
+				PRODUCT_NAME = BubbleMania;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+			};
+			name = Debug;
+		};
+		6D9CCE311A764766005AD4FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6B1A3DD99ED07F02A7525B63 /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = LevelDesigner/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = nus.cs3217.a0131465.LevelDesigner;
+				PRODUCT_NAME = BubbleMania;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+			};
+			name = Release;
+		};
+		6D9CCE331A764766005AD4FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = LevelDesignerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "nus.cs3217.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = BubbleMania;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BubbleMania.app/BubbleMania";
+			};
+			name = Debug;
+		};
+		6D9CCE341A764766005AD4FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = LevelDesignerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "nus.cs3217.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = BubbleMania;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BubbleMania.app/BubbleMania";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6D9CCE0B1A764766005AD4FA /* Build configuration list for PBXProject "BubbleMania" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6D9CCE2D1A764766005AD4FA /* Debug */,
+				6D9CCE2E1A764766005AD4FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6D9CCE2F1A764766005AD4FA /* Build configuration list for PBXNativeTarget "BubbleMania" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6D9CCE301A764766005AD4FA /* Debug */,
+				6D9CCE311A764766005AD4FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6D9CCE321A764766005AD4FA /* Build configuration list for PBXNativeTarget "BubbleManiaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6D9CCE331A764766005AD4FA /* Debug */,
+				6D9CCE341A764766005AD4FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6D9CCE081A764766005AD4FA /* Project object */;
+}

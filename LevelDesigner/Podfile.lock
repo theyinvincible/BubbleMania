@@ -1,0 +1,21 @@
+PODS:
+  - engine (0.0.6)
+
+DEPENDENCIES:
+  - engine (from `https://theyinvincible@bitbucket.org/cs3217/2016-ps5-pod-a0131465.git`,
+    tag `0.0.6`)
+
+EXTERNAL SOURCES:
+  engine:
+    :git: https://theyinvincible@bitbucket.org/cs3217/2016-ps5-pod-a0131465.git
+    :tag: 0.0.6
+
+CHECKOUT OPTIONS:
+  engine:
+    :git: https://theyinvincible@bitbucket.org/cs3217/2016-ps5-pod-a0131465.git
+    :tag: 0.0.6
+
+SPEC CHECKSUMS:
+  engine: 83e083ef5336308fd2d84dfc7ce33cd7b39198aa
+
+COCOAPODS: 0.39.0

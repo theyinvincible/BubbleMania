@@ -43,13 +43,43 @@ number 2 is produced, the color of that bubble will be green.
 
 When start is selected, the view controller will be switched from the level design
 view controller to the game play view controller. In the game play view controller,
-it will use the game engine to display the frames. The game engine would then
+it will use the game engine to display the frames. The game engine handles the logic
+of the game, using the physics engine to determine the positions of the bubbles, as 
+well as which bubbles are to be removed. The game engine then passes these 
+information to the renderer, which produces a view reflecting the current status of 
+the game play. The game engine then returns this view to the view controller to 
+display on screen.
+
+The advantage is that it decouples the components and increases cohesiveeness, with 
+each component purely focusing on its part: renderer handles views, physics engine handles calculations, and the game engine ties them together. This makes it easy to 
+make changes to any component, with little risk of the changes causing unforeseen 
+effects on the other components, hence avoiding the need to change every component 
+whenever a change is made.
+
+The disadvantage is that there is a constant removal/addition of subviews due to the separation of the renderer, which might make it less efficient.
+
+Alternative approaches would be to have the game view controller handle all the game engine logic.
+
 
 ###############
 # Problem 4.3 #
 ###############
 
-Your Answer here
+My strategy is that when a colored bubble collides into a powered bubble and a 
+bubble cluster of the same color, only the powered bubble will activate. I chose
+this strategy as it prevents the game from being too easy, which would cause it to
+be boring.
+For chain activation, if the power bubbles are removed due to falling off, instead
+of being directly destroyed by another power bubble, they would not be activated.
+Special scenarios are when a star bubble is indirectly destroyed by another power
+bubble. If a blue bubble is launched and collides into a bomb bubble, which then 
+detonates and destroys a star bubble, the star bubble will proceed to eliminate all
+blue bubbles, similar to a vengeance spree.
+Alternative strategies would include activating all power bubbles which are removed from the grid, or doing both activation of power bubble and removal of a separate 
+cluster should a bubble hit both at the same time. I chose not to adopt these
+strategies as I felt that they overly simplified the game play. I thought it would be 
+more fun to make players choose in a situation such as if they activated a lightning 
+bubble, they would have to forego the star bubble hanging somewhere below the lightning bubble and such.
 
 ############################
 # Problem 6: Class Diagram #
@@ -61,19 +91,202 @@ Please save your diagram as `class-diagram.png` in the root directory of the rep
 # Problem 7: Testing #
 ######################
 
-Your Answer here
+1) Test screen transitions
+	- Menu -> Design Level -> Game Play -> Back to Design Level -> Back to Menu
+	-> Play Level -> Game Play -> Play Level -> select another level to go into 
+	Game Play -> Back to Play Level -> Back to Menu
 
+2) Test Menu
+	a) Selecting “Design Level” should transit into the level designer screen
+	b) Selecting “Play Level” should transit into the play level screen for 
+	   selection of levels to play
+
+3) Test Play Level
+	a) All levels saved in level designer should be displayed
+	b) The names of the levels should reflect the name that they were saved with
+	c) The display of the levels should be scrollable
+	d) Selecting a level would highlight the table cell
+	e) Selecting the “BACK” button should transit the screen back to Menu
+	f) Selecting the “PLAY” button when no level is selected should result in
+	   nothing happening
+	g) Selecting a level and pressing “PLAY” should transit into Game Play screen
+		-> Test Game Play
+
+4) Test Game Play
+	a) There should not be any empty bubble cells (like that in level designer)
+	b) The bubbles displayed should match the saved version
+	c) There should be a cannon, and 3 preview launch bubbles at the bottom 	
+	   of the screen
+	d) When the screen is tapped, the cannon should rotate to the direction of
+	   where the screen was tapped. The dashed line leading out of the middle of
+	   the cannon should also be pointing in the same direction
+	e) When the base of the cannon is tapped, a bubble with the same colour as 
+	   the leftmost bubble of the preview bubbles should be expelled from the 
+	   cannon, following the trajectory of the dashed line.
+	f) Test bubble movement
+		- Bubble moves at constant speed
+		- Bubble bounces off left wall
+		- Bubble bounces off right wall
+		- Bubble is able to continuously bounce off right and left walls until
+		  it collides into a bubble/top wall
+		- Bubble attaches itself to top row when it comes into contact with it
+		- Bubble attaches to grid when collided into another bubble
+	g) When bubble is in midair, selecting the cannon base will not launch a new
+	   bubble
+	h) Test bubble snapping
+		- When launched bubble collides into a bubble in the grid, it snaps
+		  into the closest cell and is attached to the bubble it collided with
+		- Snap to bubble in top right corner
+		- Snap to bubble in top left corner
+		- Snap into a space directly between two bubbles
+		- Snap into a space after bouncing off left and right walls
+		- Snap to empty space in top row
+	h) Test effects of bubble collision
+		- When a bubble snaps into grid and is not connected to >2 same
+		coloured bubbles, nothing happens
+		- When a bubble snaps into grid and is connected to >2 same coloured
+		bubbles with no floating bubbles, this group of bubbles should fade
+		out and disappear
+		- When a bubble snaps into grid and is connected to >2 same coloured
+		bubbles with floating bubbles, the group of bubbles as well as 
+		the floating bubbles should fade out and disappear
+		- When a bubble collides into both a cluster of the same colour and a
+		power bubble (not indestructible) the power bubble will activate, but
+		the cluster should not be removed, unless due to the power bubble.
+		- Indestructible bubbles should only disappear if they were destroyed
+		by a power bubble or if they fell off
+		- Colliding into a star bubble should remove all bubbles of the same
+		color ads the launch bubble
+		- Colliding into a lightning bubble should remove all bubbles below 
+		the row the lightning bubble resides on
+		- Colliding into a bomb bubble should remove the bubbles surrounding
+		the bomb bubble
+		- Colliding into an indestructible bubble should result in nothing
+		- Chain reactions should only occur for power bubbles directly 
+		destroyed by the previous activated power bubble. If the power bubbles
+		became floating bubbles before being activated, they will not activate
+		- If a star bubble activates as a result, it will remove all bubbles
+		of the same color as the launch bubble
+	i) When launched bubble snaps to grid, and bubbles are removed(if any, the 
+	   preview launch bubbles should move to the right and a new preview bubble
+	   should be added on the leftmost 
+	j) Selecting “Back” button should return to the previous screen (Level Design
+	   or Play Level) accordingly
+
+5) Level Design
+	a) File operations
+		i) Load
+		- an empty design that was saved -> expected: loading the file should
+		show an empty design
+		- a design that was reset and saved -> expected: loading the file
+		should show an empty design
+		- load a saved file, make changes to it, save it again with the same	
+		file name and reload it. Check that changes are there.
+		- a filled design that was saved
+		ii) Save
+		- save an empty design -> expected: loading the file should show an 
+		empty same design
+		- save a filled design -> expected: loading the file should show the 
+		exact same design
+		- reset and save a design -> expected: loading the file should show an 
+		empty design
+		- editing a previously saved file and re-saving it to the same name -> 
+		expected: loading the file should now show the updated design
+			- edit by: cycling an already colored bubble’s color, panning 
+			the different palette modes over empty/colored bubbles, 
+			erasing an existing colored bubble using long press
+		- When a file is saved, it should immediately be available on the
+		load screen. Once ‘load’ is selected, it should show the same view
+		as it had when it was saved.
+		- When a file is saved, it should immediately be visible on the Play
+		Level screen as well
+		iii) Delete
+		- When a file is deleted, it should not be visible on the load 
+		alert and the Play Level screen
+
+	b) Gestures (to be tested with all palette modes (e.g red, orange, green, 
+	blue, erase, lightning, indestructible, star, bomb, unselected modes) for
+	each test case)
+		i) Tap
+		- on an empty bubble cell -> expected: bubble should take the image of
+		the chosen palette
+		- on a colored bubble cell 
+			- when palette is unselected -> expected: color should cycle 
+			from red -> orange -> green -> blue -> red
+			- when a palette icon is selected -> expected: the bubble’s 
+			image should change to that of the selected mode
+		- on a power bubble cell
+			- when palette is unselected -> expected: nothing should
+			change
+			- when a palette icon is selected -> expected: the bubble’s 
+			image should change to that of the selected mode
+		- bubble cells on the edges of the bubble grid -> expected: bubbles 
+		should take the color of the chosen palette
+		- area outside the grid -> expected: nothing should occur
+		ii) Pan
+		- over empty bubble cells -> expected: bubbles should take the image 
+		of the chosen palette
+		- over colored bubble cells -> expected: bubbles should take the image 
+		of the chosen palette
+		- over power bubble cells -> expected: bubbles should take the image 
+		of the chosen palette
+		- edges of the bubble grid -> expected: bubbles should take the image 
+		of the chosen palette
+		- area outside the grid -> expected: nothing should occur
+		iii) Long press
+		- on an empty bubble cell -> expected: nothing should occur
+		- on a colored bubble cell -> expected: colored bubble cell should be 
+		erased
+		- on a power bubble cell -> expected: colored bubble cell should be 
+		erased
+		- outside the grid -> expected: nothing should occur
+
+	c) Selection of drawing modes (test for all icons)
+		- tap on an icon: -> expected: icon’s mode will be selected and will 
+		appear bolder whereas other icons are dimmer
+		- tap on a selected icon -> expected: icon’s mode will be deselected 
+		and appear as dim as other icons
+	
+	d) Alert display
+		i) Save
+		- save with an extremely long file name -> expected: full name is 
+		saved as the file’s name
+		- save a design without an input name -> expected: The design will not 
+		be saved
+		- load a previously saved file and save it again with the same name ->
+		expected: loading that same file name will display the edited version
+		- load a previously saved file and save it again with a different name 
+		-> expected: loading that old file name will display the previous
+		version and loading the new file name will display the edited version
+		ii) Load
+		- display of an extremely long file name -> expected: file name should 
+		be fully seen from cell view
+		- delete a saved file -> expected: file name should be removed from 
+		alert view permanently
+		- selecting ‘load’ when no files are selected -> expected: Nothing 
+		should occur		
+	
+	e) Selecting Back button should return to Menu screen
+	f) Selecting Start button should lead to Game Play screen
+		-> test Game Play
+
+6) Whole
+	- Design a few games (with power bubbles, without power bubbles, with single 	color bubbles etc) and play them from both the Level Design and Play Level 
+	screen
 
 ###################################
 # Problem 8: The Bells & Whistles #
 ###################################
 
-Your Answer here
+- Bubbles fade out when removed
+- Cannon shows projected trajectory path
+- Delete function for files in load alert of Level Design
+- Effort into display of the Menu screen and Play Level screen
 
 
 ###############################
 # Problem 9: Final Reflection #
 ###############################
 
-Your Answer here
+My original design of MVC and game engine was not very good as a lot of the components were highly coupled together, and it was hard to keep track of what I was doing when I implemented them initially. After receiving the feedback given and redoing the original designs, it became a lot clearer on what each component should be responsible of and how they interact with each other. I am unable to think of further improvements to the current design/architecture as I feel that this method, with a component handling the view, a component handling the logic and so on, is very clear and highly cohesive.
 
