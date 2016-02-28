@@ -12,15 +12,20 @@ import Darwin
 class GameViewController: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var LaunchButton: UIButton!
     @IBOutlet var cannon: UIView!
-    @IBOutlet var pausebutton: UIButton!
+    @IBOutlet var backButton: UIButton!
     
     private var launchAngle = Constants.startingLaunchAngle
     private var gridData: BubbleGrid?
     private var gameEngine: GameEngine?
     private var currentFrame: UIView?
+    private var previousViewControllerID: String?
     
     func setGridData(gridDesign: BubbleGrid) {
         gridData = gridDesign
+    }
+    
+    func setPreviousControllerIdentifier(viewControllerID: String) {
+        previousViewControllerID = viewControllerID
     }
     
     override func viewDidLoad() {
@@ -41,9 +46,6 @@ class GameViewController: UIViewController, UIGestureRecognizerDelegate {
     
     /// updates positions of objects and renders the frame accordingly
     func updateView() {
-        if pause {
-            return
-        }
         currentFrame?.removeFromSuperview()
         currentFrame = gameEngine!.getView()
         view.addSubview(currentFrame!)
@@ -52,16 +54,7 @@ class GameViewController: UIViewController, UIGestureRecognizerDelegate {
         cannon.transform = CGAffineTransformMakeRotation(CGFloat(Constants.startingLaunchAngle - launchAngle))
         self.view.addSubview(cannon)
         self.view.bringSubviewToFront(LaunchButton)
-        self.view.bringSubviewToFront((pausebutton))
-    }
-    
-    var pause = false
-    @IBAction func pause(sender: AnyObject?) {
-        if pause {
-            pause = false
-        } else {
-            pause = true
-        }
+        self.view.bringSubviewToFront(backButton)
     }
 
     /// Handles launch button, launches the bubble in the cannon if no other bubbles are mid-air
@@ -80,6 +73,11 @@ class GameViewController: UIViewController, UIGestureRecognizerDelegate {
             launchAngle += M_PI
         }
         gameEngine!.updateAngle(launchAngle)
+    }
+    @IBAction func backButtonSelected(sender: AnyObject) {
+        let prevViewController = self.storyboard!.instantiateViewControllerWithIdentifier(previousViewControllerID!)
+        prevViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+        self.presentViewController(prevViewController, animated: true, completion: nil)
     }
 }
 

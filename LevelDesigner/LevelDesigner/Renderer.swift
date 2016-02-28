@@ -23,8 +23,7 @@ class Renderer {
     private var storedGridView: UIView?
     private var storedPrelaunchBubblesView = [BubbleView]()
     private var projectileBubbleView: BubbleView?
-    private var animationCounter = 60
-    private var animationCount = 60
+    private var animationCounter = Constants.animationCount
     
     init(data: BubbleGrid, launchedBubble: ProjectileBubble, frame: CGRect) {//, prelaunchBubbles: [ProjectileBubble]) {
         self.gridView = BubbleGridView(frame: frame, gridDesign: data)
@@ -104,18 +103,18 @@ class Renderer {
                     gridView.removeBubbleViewAtPosition(bubbleView.getRow(), col: bubbleView.getCol())
                 }
                 removedBubbleViews.removeAll()
-                animationCounter = 60
-            } else if animationCounter < 20 {
+                animationCounter = Constants.animationCount
+            } else if animationCounter < Constants.animationCount/3 {
                 for bubbleView in removedBubbleViews {
-                    bubbleView.alpha = 0.2
+                    bubbleView.alpha = Constants.thirdPhaseAlpha
                 }
-            } else if animationCounter < 40 {
+            } else if animationCounter < (2 * Constants.animationCount)/3 {
                 for bubbleView in removedBubbleViews {
-                    bubbleView.alpha = 0.5
+                    bubbleView.alpha = Constants.secondPhaseAlpha
                 }
             } else {
                 for bubbleView in removedBubbleViews {
-                    bubbleView.alpha = 0.7
+                    bubbleView.alpha = Constants.firstPhaseAlpha
                 }
             }
             animationCounter--

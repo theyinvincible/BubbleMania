@@ -36,6 +36,12 @@ struct Constants {
     static let uninitializedColorAlpha = CGFloat(0.3)
     static let unselectedAlpha =  CGFloat(0.6)
     static let selectedAlpha = CGFloat(1.0)
+    static let firstPhaseAlpha = CGFloat(0.7)
+    static let secondPhaseAlpha = CGFloat(0.5)
+    static let thirdPhaseAlpha = CGFloat(0.3)
+    
+    static let numPreviewBubbles = 3
+    static let animationCount = 15
     
     static let emptyString = ""
     
@@ -43,6 +49,8 @@ struct Constants {
     static let loadTableCellIdentifier = "mycell"
     static let gameViewControllerIdentifier = "GameScreen"
     static let menuViewControllerIdentifier = "MenuScreen"
+    static let playLevelViewControllerIdentifier = "PlayLevelScreen"
+    static let levelDesignViewControllerIdentifier = "LevelDesignScreen"
     
     static let errorMessageFailedToRetrieveDocument = "Failed to retrieve files from documents directory"
     static let errorMessageFailedToDeleteFile = "Failed to delete file"

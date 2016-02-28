@@ -49,35 +49,38 @@ class PlayLevelViewController: UIViewController, UITableViewDataSource, UITableV
         cell!.textLabel?.adjustsFontSizeToFitWidth = true
         cell!.textLabel?.text = savedFileNames![indexPath.row]
         cell!.textLabel?.font = UIFont(name: "Arial", size: 48)
-        cell!.textLabel?.textAlignment = NSTextAlignment.Center
         return cell!
     }
     
+    /// - returns color of a cell
     func colorForIndex(index: Int) -> UIColor {
         let itemCount = savedFileNames!.count - 1
         let val = (CGFloat(index) / CGFloat(itemCount)) * 0.6
-        return UIColor(red: 1.0, green: val, blue: 0.0, alpha: 1.0)
+        return UIColor(red: 0.5, green: val, blue: 1.0, alpha: 1.0)
     }
     
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell,
-        forRowAtIndexPath indexPath: NSIndexPath) {
+    /// sets the color of the cell
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
             cell.backgroundColor = colorForIndex(indexPath.row)
     }
     
+    /// When play button is selected, it loads the data of the level chosen and starts game play
     @IBAction func playButtonSelected(sender: AnyObject) {
         let pathToSelectedCell = tableView.indexPathForSelectedRow
         if pathToSelectedCell != nil {
             let selectedFileName = tableView.cellForRowAtIndexPath(pathToSelectedCell!)?.textLabel?.text
             let loadedLevelData = getLevelData(selectedFileName!)
-            let gameEngineViewController = self.storyboard!.instantiateViewControllerWithIdentifier(Constants.gameViewControllerIdentifier) as! GameViewController
+            let gameViewController = self.storyboard!.instantiateViewControllerWithIdentifier(Constants.gameViewControllerIdentifier) as! GameViewController
             loadedLevelData.removeAllEmptyBubbles()
-            gameEngineViewController.setGridData(loadedLevelData)
-            gameEngineViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-            self.presentViewController(gameEngineViewController, animated: true, completion: nil)
+            gameViewController.setGridData(loadedLevelData)
+            gameViewController.setPreviousControllerIdentifier(Constants.playLevelViewControllerIdentifier)
+            gameViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+            self.presentViewController(gameViewController, animated: true, completion: nil)
         }
  
     }
     
+    /// Selecting the back button leads back to the menu page
     @IBAction func backButtonSelected(sender: AnyObject) {
         let menuViewController = self.storyboard!.instantiateViewControllerWithIdentifier(Constants.menuViewControllerIdentifier)
         menuViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve

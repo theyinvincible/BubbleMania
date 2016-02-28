@@ -2,33 +2,48 @@
 # CS3217 Problem Set 5 #
 ########################
 
-# Name: 
-# Matric No:
-# Tutor:
+# Name: Ong Jing Yin
+# Matric No: A0131465L
+# Tutor: Di Wu
 
 ######################
 # Rules of Your Game #
 ######################
 
-Your Answer here
+1) Bubbles will be removed when the launched bubble connects with
+	a) special bubbles (excluding indestructible)
+	b) two or more bubbles with the same color
+2) When one bubble is mid-air, the player cannot launch another bubble
+3) If a bubble hits a same-colored cluster and a power bubble, the effects
+on the grid would be that of the power bubble’s (i.e. the cluster would not
+be removed solely due to collision with the launched bubble)
+4) Indestructible bubbles can only be removed by falling out or if they are
+destroyed by power bubbles
 
 ###############################
 # Problem 1: Cannon Direction #
 ###############################
 
-Your Answer here
+The user is to select the cannon direction by tapping on the screen where the
+user wishes to aim towards. The cannon will then point towards where the user
+had tapped.
 
 ###############################
 # Problem 2: Upcoming Bubbles #
 ###############################
 
-Your Answer here
+The colours are decided on randomly for fair play. A random generator is used,
+and the number churned out will determine the color of the bubble. For example,
+if 1 - blue, 2 - green, when a new projectile bubble is being generated, if the
+number 2 is produced, the color of that bubble will be green.
 
 ##########################
 # Problem 3: Integration #
 ##########################
 
-Your Answer here
+When start is selected, the view controller will be switched from the level design
+view controller to the game play view controller. In the game play view controller,
+it will use the game engine to display the frames. The game engine would then
 
 ###############
 # Problem 4.3 #

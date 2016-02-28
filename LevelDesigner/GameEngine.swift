@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import engine
+
 
 class GameEngine {
     private var launchBubblePosition: (CGFloat, CGFloat) = (0, 0)
@@ -18,7 +20,7 @@ class GameEngine {
     
     private var launchBubble = ProjectileBubble(xPos: -1, yPos: -1)
     private var prelaunchBubbles = [ProjectileBubble]()
-    private var numPrelaunchBubbles = 3;
+    private var numPrelaunchBubbles = Constants.numPreviewBubbles;
     
     private var bubbleDiameter: CGFloat?
     private var currentFrame: UIView?
@@ -27,7 +29,6 @@ class GameEngine {
     private var physicsEngine: PhysicsEngine
     private var velocity: Double
     
-    private var explodingFrames = 0
     private var lastSnappedBubble: GridBubble?
     private var bubblesToBeRemoved = [GridBubble]()
     

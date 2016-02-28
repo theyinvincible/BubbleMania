@@ -236,12 +236,13 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
     }
     
     @IBAction func startButtonSelected() {
-        let gameEngineViewController = self.storyboard!.instantiateViewControllerWithIdentifier(Constants.gameViewControllerIdentifier) as! GameViewController
+        let gameViewController = self.storyboard!.instantiateViewControllerWithIdentifier(Constants.gameViewControllerIdentifier) as! GameViewController
         let currentLevelDesign = convertDataToModel()
         currentLevelDesign.removeAllEmptyBubbles()
-        gameEngineViewController.setGridData(currentLevelDesign)
-        gameEngineViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-        self.presentViewController(gameEngineViewController, animated: true, completion: nil)
+        gameViewController.setGridData(currentLevelDesign)
+        gameViewController.setPreviousControllerIdentifier(Constants.levelDesignViewControllerIdentifier)
+        gameViewController.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+        self.presentViewController(gameViewController, animated: true, completion: nil)
     }
     
     /// Action performed when Reset button is selected

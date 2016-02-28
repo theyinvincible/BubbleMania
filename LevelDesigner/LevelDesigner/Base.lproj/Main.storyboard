@@ -8,7 +8,7 @@
         <!--Level Design View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LevelDesignViewController" customModule="BubbleMania" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LevelDesignScreen" id="BYZ-38-t0r" customClass="LevelDesignViewController" customModule="BubbleMania" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -157,7 +157,7 @@
         <!--Play Level View Controller-->
         <scene sceneID="2eN-Z9-f8P">
             <objects>
-                <viewController id="pR1-Rq-5ne" customClass="PlayLevelViewController" customModule="BubbleMania" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PlayLevelScreen" id="pR1-Rq-5ne" customClass="PlayLevelViewController" customModule="BubbleMania" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YRs-oo-ctN"/>
                         <viewControllerLayoutGuide type="bottom" id="gXS-8S-AZh"/>
@@ -169,6 +169,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Rsa-vh-Jd9">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="861"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" red="0.34801074920672259" green="1" blue="0.7865500462870969" alpha="1" colorSpace="calibratedRGB"/>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pet-zK-4PY">
                                 <rect key="frame" x="0.0" y="862" width="383" height="162"/>
@@ -187,7 +188,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.20727637408878641" green="1" blue="0.59277397401672238" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
@@ -227,11 +228,13 @@
                                     <action selector="launchBubble:" destination="d8c-WB-gGe" eventType="touchUpInside" id="dAj-3f-brW"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KeZ-pc-GHE">
-                                <rect key="frame" x="465" y="900" width="82" height="46"/>
-                                <state key="normal" title="Pause"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uih-Wv-0C3">
+                                <rect key="frame" x="0.0" y="979" width="90" height="30"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleColor" red="1" green="0.091453760410557972" blue="0.2732569077042436" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
-                                    <action selector="pause:" destination="d8c-WB-gGe" eventType="touchUpInside" id="zaV-qU-wg3"/>
+                                    <action selector="backButtonSelected:" destination="d8c-WB-gGe" eventType="touchUpInside" id="6km-gx-Vmy"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -240,8 +243,8 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
                         <outlet property="LaunchButton" destination="tsd-gv-cAR" id="ULt-Gy-oQP"/>
+                        <outlet property="backButton" destination="uih-Wv-0C3" id="XiL-to-mCH"/>
                         <outlet property="cannon" destination="Xth-X0-nAb" id="b0m-iG-NVW"/>
-                        <outlet property="pausebutton" destination="KeZ-pc-GHE" id="dfI-Of-k9f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kpz-Sy-JG5" userLabel="First Responder" sceneMemberID="firstResponder"/>
