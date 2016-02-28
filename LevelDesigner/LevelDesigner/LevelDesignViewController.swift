@@ -235,7 +235,7 @@ class LevelDesignViewController: UIViewController, UIGestureRecognizerDelegate, 
         let gameEngineViewController = self.storyboard!.instantiateViewControllerWithIdentifier("GameEngine") as! GameViewController
         let currentLevelDesign = convertDataToModel()
         currentLevelDesign.removeAllEmptyBubbles()
-        gameEngineViewController.setGridDesign(currentLevelDesign)
+        gameEngineViewController.setGridData(currentLevelDesign)
         self.presentViewController(gameEngineViewController, animated: true, completion: nil)
     }
     
